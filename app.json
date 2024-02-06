@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "nutrire-app",
-    "slug": "nutrire-app",
+    "slug": "nutrire",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "84e0402b-74c0-45c1-bf73-9d8d7205e389"
+      }
+    },
+    "owner": "sthefany.dev",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/84e0402b-74c0-45c1-bf73-9d8d7205e389"
     }
   }
 }

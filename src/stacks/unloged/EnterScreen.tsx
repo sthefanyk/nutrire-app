@@ -4,6 +4,7 @@ import Feijao from "../../assets/svgs/Feijao";
 import LogoHorizontal from "../../assets/svgs/LogoHorizontal";
 import Forma1 from "../../assets/svgs/Forma1";
 import { COLORS } from "../../design/color";
+import JaoWaving from "../../assets/svgs/mascot/medium/JaoWaving";
 
 const EnterScreen = ({navigation}: any) => {
     return (
@@ -16,12 +17,13 @@ const EnterScreen = ({navigation}: any) => {
                 <Text className="font-fresca text-3xl text-brown_200 text-center">
                     Alimentos orgânicos e sustentáveis próximos a você.
                 </Text>
-                <Feijao 
+
+                <JaoWaving 
                     className="absolute right-6 bottom-0"
                 />
             </View>
 
-            <View className="w-[80%] gap-4">
+            <View className="w-[80%] gap-4 items-center">
                 <Pressable
                     onPress={() => navigation.navigate('Login')}
                     className="bg-green_400 py-4 w-full items-center rounded-lg border-b-4 border-r-4 border-brown_200"
@@ -32,7 +34,7 @@ const EnterScreen = ({navigation}: any) => {
                 </Pressable>
 
                 <Pressable
-                    onPress={() => navigation.navigate('Register')}
+                    onPress={() => navigation.navigate('TypeUser')}
                     className="bg-green_300 py-4 w-full items-center rounded-lg border-b-4 border-r-4 border-brown_200"
                     >
                     <Text

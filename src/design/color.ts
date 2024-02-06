@@ -12,4 +12,8 @@ export const COLORS = {
     orange: "#EF7D00",
     yellow: "#EBBD00",
     honey: "#AC6006",
+
+    green_100_50: "#E1EBC1",
 }
+
+
