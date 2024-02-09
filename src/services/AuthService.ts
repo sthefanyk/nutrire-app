@@ -16,7 +16,7 @@ const mockedApiData: ApiDataType = {
 export const Signin = async (email:string, password:string) => {
     return new Promise((resolve, reject) => {
         setTimeout( async () => {
-            if (email === 'devsthe' && password === '123') {
+            if (email === 'nutrire' && password === 'nutrire') {
                 resolve(mockedApiData)
             } else {
                 reject(new Error('Credenciais inválidas'))

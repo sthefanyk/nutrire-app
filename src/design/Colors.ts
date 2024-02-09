@@ -12,8 +12,12 @@ export const COLORS = {
     orange: "#EF7D00",
     yellow: "#EBBD00",
     honey: "#AC6006",
+    light: "#FFFFFF",
+    dark: "#1D1B20",
+    dark_search: "#202124",
 
     green_100_50: "#E1EBC1",
+    brown_300_50: "#8F8789",
 }
 
 
