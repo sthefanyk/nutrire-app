@@ -54,7 +54,7 @@ const InputPassword = ({
 
             <View
                 className={`
-              flex-row justify-center items-center w-full h-14 pl-5 py-4 rounded-lg
+              flex-row justify-center items-center w-full h-12 pl-5 py-2 rounded-lg
               ${getInputTheme()}
             `}
                 style={GAP[8]}

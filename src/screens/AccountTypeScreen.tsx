@@ -30,7 +30,7 @@ const AccountTypeScreen = ({ navigation }: any) => {
 
     const { login, loading } = useAuth();
     const { theme, updateTheme } = useTheme();
-    const { screenTheme, font } = useDesign();
+    const { screenTheme, font, screenThemeHex } = useDesign();
 
     const getTextTheme = () => {
         if (theme === Theme.Normal) {
@@ -70,9 +70,9 @@ const AccountTypeScreen = ({ navigation }: any) => {
                 // keyboardVerticalOffset={0}
                 className={`
             flex-1 w-full px-4 items-center
-            ${screenTheme("bg")}
+            ${screenTheme()}
           `}
-                style={GAP[16]}
+                style={[GAP[16], {backgroundColor: screenThemeHex()}]}
             >
                 {theme === Theme.Dark ? (
                     <StatusBar backgroundColor="transparent" style="light" />
@@ -84,7 +84,7 @@ const AccountTypeScreen = ({ navigation }: any) => {
                     <Text
                         className={`
                 font-fresca w-full place-items-start
-                ${font("4xl") + " " + getTextTheme()}
+                ${font("3xl") + " " + getTextTheme()}
               `}
                     >
                         Bem-vindo ao Nutrire!
@@ -92,7 +92,7 @@ const AccountTypeScreen = ({ navigation }: any) => {
                     <Text
                         className={`
                 font-montserrat-medium w-full place-items-start mb-8
-                ${font("case") + " " + getTextTheme()}
+                ${font("sm") + " " + getTextTheme()}
               `}
                     >
                         Para começar, nos diga, você é cliente ou vendedor?
@@ -108,9 +108,9 @@ const AccountTypeScreen = ({ navigation }: any) => {
                     >
                         <Text
                             className={`
-                font-montserrat-semibold text-brown_100 
-                ${font("lg")}
-              `}
+                            font-montserrat-semibold text-brown_100 
+                            ${font("base")}
+                        `}
                         >
                             Cliente
                         </Text>
@@ -126,9 +126,9 @@ const AccountTypeScreen = ({ navigation }: any) => {
                     >
                         <Text
                             className={`
-                font-montserrat-semibold text-brown_100 
-                ${font("lg")}
-              `}
+                            font-montserrat-semibold text-brown_100 
+                            ${font("base")}
+                        `}
                         >
                             Vendedor
                         </Text>

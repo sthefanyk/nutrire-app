@@ -14,13 +14,14 @@ import GAP from "../design/gap"
 import SearchBar from "../components/SearchBar";
 
 const HomeScreen = () => {
-    const { screenTheme, textColor, font } = useDesign();
+    const { screenTheme, screenThemeHex, textColor, font } = useDesign();
 
     const [search, setSearch] = useState("");
 
     return (
         <View
-            className={`flex-1 w-full px-4 items-center ${screenTheme('bg')}`}
+            className={`flex-1 w-full px-4 items-center ${screenTheme()}`}
+            style={{backgroundColor: screenThemeHex()}}
         >
             <View className="my-4">
                 <SearchBar
@@ -40,7 +41,7 @@ const HomeScreen = () => {
                 <Banner />
 
                 <Text className={`
-                    mt-4 mb-1 font-montserrat-semibold
+                    mb-1 font-montserrat-semibold
                     ${textColor() + " " + font('xl')}
                     `}>Verduras
                 </Text>

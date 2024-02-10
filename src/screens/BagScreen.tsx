@@ -1,71 +1,28 @@
-import { View, Text, FlatList, Pressable, ScrollView } from "react-native";
+import { View, Text, FlatList, Pressable, ScrollView, Alert } from "react-native";
 import React from "react";
 import { useDesign } from "../design/useDesign";
 import { ProductBagType } from "../types/ProductBagType";
 import { useTheme } from "../context/ThemeContext";
 import { Theme } from "../enums/Theme";
 import IAdd from "../assets/icons/IAdd";
-import GAP from "../design/gap";
 import IRemove from "../assets/icons/IRemove";
+import { useProduct } from "../context/ProductContext";
+import { formatNumberForReal } from "../services/FormatService";
 
 const BagScreen = () => {
-    const { screenTheme, textColor, font } = useDesign();
+    const { screenTheme, screenThemeHex, textColor, font } = useDesign();
+    const { bag, clearBag, removeQtdBag, addQtdProductBag, getProductsBag } = useProduct();
     const { theme } = useTheme();
 
-    const data: ProductBagType[] = [
-        {
-            name: "Batata",
-            price: "5.99 / Kg",
-            qtd: 1,
-            reserva: true,
-            total: 5.99,
-        },
-        {
-            name: "Tomate",
-            price: "5.99 / Kg",
-            qtd: 1,
-            reserva: false,
-            total: 5.99,
-        },
-        {
-            name: "Maça",
-            price: "5.99 / Kg",
-            qtd: 1,
-            reserva: false,
-            total: 5.99,
-        },
-        {
-            name: "Abacate",
-            price: "5.99 / Kg",
-            qtd: 1,
-            reserva: true,
-            total: 5.99,
-        },
-        {
-            name: "Uva",
-            price: "5.99 / Kg",
-            qtd: 1,
-            reserva: true,
-            total: 5.99,
-        },
-        {
-            name: "Mamão",
-            price: "5.99 / Kg",
-            qtd: 1,
-            reserva: true,
-            total: 5.99,
-        }
-        
-
-    ];
     return (
         <View
-            className={`flex-1 w-full px-4 items-center ${screenTheme("bg")}`}
+            className={`flex-1 w-full px-4 items-center ${screenTheme()}`}
+            style={{backgroundColor: screenThemeHex()}}
         >
             <View className="w-full flex-row justify-between my-4">
                 <Text
                     className={`
-                        ${textColor()} font-montserrat-semibold ${font("2xl")}
+                        ${textColor()} font-montserrat-semibold ${font("xl")}
                     `}
                 >
                     Sacolinha
@@ -73,17 +30,18 @@ const BagScreen = () => {
                 <Text
                     className={`
                         ${textColor()} font-montserrat-semibold ${font(
-                        "lg"
+                        "base"
                     )} text-opacity-50
                     `}
                 >
-                    {data.length} Itens
+                    {bag.qtd} Itens
                 </Text>
             </View>
 
             <FlatList
-                data={data}
+                data={getProductsBag()}
                 renderItem={({ item }) => {
+                    console.log(item)
                     return (
                         <View
                             className={`flex-1 w-full py-4 flex-row border-b-[0.4px] 
@@ -111,7 +69,7 @@ const BagScreen = () => {
                                         )}
                                     `}
                                     >
-                                        R$ {item.price}
+                                        {formatNumberForReal(item.price * item.qtd)}
                                     </Text>
                                 </View>
                                 <Text
@@ -124,7 +82,7 @@ const BagScreen = () => {
                                     font-montserrat-semibold ${font("sm")} 
                                 `}
                                 >
-                                    R$ {item.total.toString()}
+                                    {formatNumberForReal(item.price * item.qtd)}
                                 </Text>
                             </View>
                             <Text
@@ -144,9 +102,13 @@ const BagScreen = () => {
                                     : "Para comprar"}
                             </Text>
                             <View className="items-center justify-between">
-                                <View className="bg-green_300 rounded-sm w-6 h-6 justify-center items-center">
+                                <Pressable 
+                                    onPress={() => {
+                                        addQtdProductBag(item.id);
+                                    }}  
+                                    className="bg-green_300 rounded-sm w-6 h-6 justify-center items-center">
                                     <IAdd />
-                                </View>
+                                </Pressable>
                                 <Text
                                     className={`
                                     ${
@@ -159,14 +121,18 @@ const BagScreen = () => {
                                 >
                                     {item.qtd.toString()}
                                 </Text>
-                                <View className="bg-green_300 rounded-sm w-6 h-6 justify-center items-center">
+                                <Pressable
+                                    onPress={() => {
+                                        removeQtdBag(item.id);
+                                    }}
+                                    className="bg-green_300 rounded-sm w-6 h-6 justify-center items-center">
                                     <IRemove />
-                                </View>
+                                </Pressable>
                             </View>
                         </View>
                     );
                 }}
-                keyExtractor={item => item.name}
+                keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
                 className="flex-1 w-full"
             />
@@ -178,20 +144,23 @@ const BagScreen = () => {
                     <Text
                         className={`
                             font-montserrat-semibold 
-                            ${font("lg")} ${theme === Theme.Dark ? "text-green_300" : "text-green_400"}
+                            ${font("sm")} ${theme === Theme.Dark ? "text-green_300" : "text-green_400"}
                         `}
                     >
-                        Total R$ 12.00
+                        Total {bag.total ? formatNumberForReal(bag.total) : formatNumberForReal(0)}
                     </Text>
                 </View>
                 <Pressable
-                    onPress={() => console.log("encomendando")}
+                    onPress={() => {
+                        clearBag();
+                        Alert.alert('encomendando');
+                    }}
                     className={`flex-1 bg-green_400 py-2 items-center rounded-lg`}
                 >
                     <Text
                         className={`
                             font-montserrat-semibold text-light 
-                            ${font("lg")}
+                            ${font("sm")}
                         `}
                     >
                         Encomendar

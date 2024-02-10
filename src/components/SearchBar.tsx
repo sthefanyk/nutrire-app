@@ -54,7 +54,7 @@ const SearchBar = ({
                 flex-1 font-montserrat-semibold placeholder:font-montserrat-regular
                 ${
                     " " +
-                    font("base") +
+                    font("sm") +
                     " " +
                     textColor() +
                     " " +

@@ -34,7 +34,7 @@ const CardHome = () => {
                     </Text>
                 </View>
 
-                <View
+                {/* <View
                     className="flex-row px-2 py-1 bg-orange rounded-sm self-end items-center"
                     style={GAP[4]}
                 >
@@ -46,7 +46,7 @@ const CardHome = () => {
                     >
                         1
                     </Text>
-                </View>
+                </View> */}
             </View>
         </View>
     );

@@ -5,12 +5,15 @@ import { useFonts } from "expo-font";
 import Splash from "./src/screens/Splash";
 import React, { useState } from "react";
 import { preventAutoHideAsync } from "expo-splash-screen";
-import { LogBox } from "react-native";
+import { LogBox, StyleSheet } from "react-native";
 import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
 import Navigator from "./src/navigators/Navigator";
 import { EnterStack } from "./src/stacks/EnterStack";
 import { Theme } from "./src/enums/Theme";
 import { StatusBar } from "expo-status-bar";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ProductProvider } from "./src/context/ProductContext";
 
 LogBox.ignoreLogs(["new NativeEventEmitter"]);
 LogBox.ignoreAllLogs();
@@ -50,11 +53,17 @@ export default function App() {
     }
 
     return splashComplete ? (
-        <AuthProvider>
-            <ThemeProvider>
-                <Root />
-            </ThemeProvider>
-        </AuthProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
+                <AuthProvider>
+                    <ThemeProvider>
+                        <ProductProvider>
+                            <Root />
+                        </ProductProvider>
+                    </ThemeProvider>
+                </AuthProvider>
+            </BottomSheetModalProvider>
+        </GestureHandlerRootView>
     ) : (
         <Splash onComplete={setSplashComplete} />
     );

@@ -44,7 +44,7 @@ const NoChatScreen = () => {
     return (
         <TouchableWithoutFeedback onPress={() => changeTheme()}>
             <View
-                className={`flex-1 w-full px-4 items-center ${screenTheme('bg')}`}
+                className={`flex-1 w-full px-4 items-center ${screenTheme()}`}
             >
                 {theme === Theme.Dark ? (
                     <StatusBar backgroundColor="transparent" style="light" />

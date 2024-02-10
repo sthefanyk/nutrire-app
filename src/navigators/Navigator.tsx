@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Dimensions } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useDesign } from "../design/useDesign";
@@ -10,11 +10,13 @@ import { COLORS } from "../design/Colors";
 import { Theme } from "../enums/Theme";
 import { useTheme } from "../context/ThemeContext";
 import HomeScreen from "../screens/HomeScreen";
-import SearchScreen from "../screens/SearchScreen";
 import PerfilScreen from "../screens/PerfilScreen";
 import BagStackScreen from "../stacks/BagStack";
 import ChatStackScreen from "../stacks/ChatStack";
 import Header from "./Header";
+import SearchStack from "../stacks/SearchStack";
+import PerfilStack from "../stacks/PerfilStack";
+import DetailsScreen from "../screens/DetailsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,8 +30,7 @@ const Navigator = () => {
                 tabBarHideOnKeyboard: true,
                 tabBarShowLabel: false,
                 tabBarStyle: {
-                    backgroundColor: screenThemeHex(),
-                    height: 56         
+                    backgroundColor: screenThemeHex(),     
                 },
                 header: props => <Header
                     props={props} 
@@ -81,9 +82,10 @@ const Navigator = () => {
                 }}
             />
             <Tab.Screen
-                name="Search"
-                component={SearchScreen}
+                name="SearchStack"
+                component={SearchStack}
                 options={{
+                    headerShown: false,
                     tabBarIcon: ({ focused }) => (
                         <View className="justify-center items-center">
                             <ISearchTab
@@ -138,9 +140,10 @@ const Navigator = () => {
                 }}
             ></Tab.Screen>
             <Tab.Screen
-                name="Perfil"
-                component={PerfilScreen}
+                name="PerfilStack"
+                component={PerfilStack}
                 options={{
+                    headerShown: false,
                     tabBarIcon: ({ focused }) => (
                         <View className="justify-center items-center">
                             <IPerfilTab

@@ -37,7 +37,7 @@ const InputText = ({ value, onChangeText, placeholder, text }: InputProps) => {
 
             <TextInput
                 className={`
-                    w-full h-14 px-5 py-4 rounded-lg font-montserrat-regular
+                    w-full h-12 px-5 py-2 rounded-lg font-montserrat-regular
                     ${
                         " " +
                         font("base") +

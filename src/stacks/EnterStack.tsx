@@ -4,6 +4,9 @@ import LoginScreen from "../screens/LoginScreen";
 import Header from "../navigators/Header";
 import AccountTypeScreen from "../screens/AccountTypeScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+import ForgetPasswordScreen from "../screens/ForgetPasswordScreen";
+import VerificationEmailScreen from "../screens/VerificationEmailScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
 const Stack = createNativeStackNavigator();
 
 export const EnterStack = () => {
@@ -11,7 +14,7 @@ export const EnterStack = () => {
 
     return (
         <Stack.Navigator
-            initialRouteName="Login"
+            initialRouteName="Welcome"
             screenOptions={{
                 headerStyle: { backgroundColor: screenThemeHex() },
                 header: props => <Header props={props} back={false} bag={false} />
@@ -35,6 +38,30 @@ export const EnterStack = () => {
                 component={RegisterScreen}
                 options={{
                     header: props => <Header props={props} bag={false} back={true}/>
+                }}
+            />
+
+            <Stack.Screen
+                name="ForgetPassword"
+                component={ForgetPasswordScreen}
+                options={{
+                    header: props => <Header props={props} bag={false} back={true} />
+                }}
+            />
+
+            <Stack.Screen
+                name="VerificationEmail"
+                component={VerificationEmailScreen}
+                options={{
+                    header: props => <Header props={props} bag={false} back={true} />
+                }}
+            />
+
+            <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+                options={{
+                    header: props => <Header props={props} bag={false} back={false} />
                 }}
             />
         </Stack.Navigator>

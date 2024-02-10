@@ -18,7 +18,9 @@ module.exports = {
             honey: "#AC6006",
             light: "#FFFFFF",
             dark: "#1D1B20",
-            normal: "#FAEFDC",
+            default: "#FAEFDC",
+            a: "#FAEFDC",
+            b: "#FAEFDC",
             dark_search: "#202124",
             green_100_50: "#E1EBC1",
             brown_300_50: "#8F8789"

@@ -6,7 +6,7 @@ import { COLORS } from "./Colors";
 export interface DesignType {
     font: (font: string) => string;
     textColor: () => string;
-    screenTheme: (props: string) => string;
+    screenTheme: () => string;
     placeholderTextColor: () => string;
     logoColor: () => string;
     bgColorInverse: (props: string) => string;
@@ -95,14 +95,14 @@ export const useDesign = (): DesignType => {
         return props + "-brown_200";
     };
 
-    const screenTheme = (props: string) => {
-        if (theme === Theme.Normal) return props + "-normal";
+    const screenTheme = () => {
+        if (theme === Theme.Normal) return "bg-normal";
 
-        if (theme === Theme.Light) return props +"-light";
+        if (theme === Theme.Light) return "bg-light";
 
-        if (theme === Theme.Dark) return props +"-dark";
+        if (theme === Theme.Dark) return "bg-dark";
 
-        return props +"-brown_100";
+        return "bg-normal";
     };
 
     const borderScreenTheme = (): "border-brown_100" | "border-light" | "border-dark" => {

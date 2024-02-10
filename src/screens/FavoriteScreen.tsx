@@ -1,9 +1,7 @@
 import { Alert, FlatList, Pressable, Text, View } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useDesign } from "../design/useDesign";
-import SearchBarFilter from "../components/SearchBarFilter";
 import createTab from "../navigators/Tab";
-import { ProductType } from "../types/ProductType";
 import CardSearch from "../components/CardSearch";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { COLORS } from "../design/Colors";
@@ -14,24 +12,12 @@ import IFav from "../assets/icons/IFav";
 import { useProduct } from "../context/ProductContext";
 import { formatNumberForReal } from "../services/FormatService";
 
-
-
-
-
-const SearchScreen = ({navigation} : any) => {
+const FavoriteScreen = ({navigation} : any) => {
     const { screenTheme, screenThemeHex, font, textColor } = useDesign();
     const { productSelected, setProductSelected, products, addProductBag } = useProduct();
-    const [search, setSearch] = useState("");
-
-    const [selectCategory, setSelectCategory] = useState("Todos");
-    const Tab = createTab();
 
     const sheetRef = useRef<BottomSheet>(null);
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-
-    const changeSelect = (name: string) => {
-        setSelectCategory(name);
-    };
 
     const handleSnapPress = useCallback((index: number) => {
         sheetRef.current?.snapToIndex(index);
@@ -40,7 +26,7 @@ const SearchScreen = ({navigation} : any) => {
     const handleSheetChange = useCallback((index: number) => {
         if (index === 1) {
             handleClosePress();
-            navigation.navigate('Details');
+            navigation.navigate('PerfilDetails');
         }
 
         setIsBottomSheetOpen(index !== -1);
@@ -60,48 +46,11 @@ const SearchScreen = ({navigation} : any) => {
             className={`flex-1 w-full px-4 items-center ${screenTheme()}`}
             style={{ backgroundColor: screenThemeHex() }}
         >
-            <SearchBarFilter
-                text="Buscar"
-                onChangeText={(text: string) => {
-                    setSearch(text);
-                }}
-                value={search}
-                placeholder="Buscar"
-            />
-
-            <Tab.Navigator>
-                <Tab.Screen
-                    name="Todos"
-                    select={selectCategory}
-                    changeSelect={changeSelect}
-                ></Tab.Screen>
-                <Tab.Screen
-                    name="Frutas"
-                    select={selectCategory}
-                    changeSelect={changeSelect}
-                ></Tab.Screen>
-                <Tab.Screen
-                    name="Verduras"
-                    select={selectCategory}
-                    changeSelect={changeSelect}
-                ></Tab.Screen>
-                <Tab.Screen
-                    name="Legumes"
-                    select={selectCategory}
-                    changeSelect={changeSelect}
-                ></Tab.Screen>
-                <Tab.Screen
-                    name="Temperos"
-                    select={selectCategory}
-                    changeSelect={changeSelect}
-                ></Tab.Screen>
-                <Tab.Screen
-                    name="Adubo"
-                    select={selectCategory}
-                    changeSelect={changeSelect}
-                ></Tab.Screen>
-            </Tab.Navigator>
-
+            <View className="w-full justify-center my-2">
+                <Text className={`${textColor()} ${font('xl')} font-montserrat-semibold`}>
+                    Favoritos
+                </Text>
+            </View>
             <FlatList
                 data={products}
                 renderItem={(item) => (
@@ -142,7 +91,7 @@ const SearchScreen = ({navigation} : any) => {
                         <View className="w-full mt-4" style={GAP[8]}>
                             <Text
                                 className={`w-full font-montserrat-semibold ${font(
-                                    "lg"
+                                    "xl"
                                 )} ${textColor()}`}
                             >
                                 {productSelected.name}
@@ -155,7 +104,9 @@ const SearchScreen = ({navigation} : any) => {
                                 {formatNumberForReal(productSelected.price)}/Und
                             </Text>
                             <Text
-                                className={`w-full font-montserrat-regular text-xs ${textColor()}`}
+                                className={`font-montserrat-regular ${font(
+                                    "sm"
+                                )} ${textColor()}`}
                             >
                                 Lorem Ipsum is simply dummy text of the
                                 printing and typesetting industry. Lorem
@@ -179,7 +130,7 @@ const SearchScreen = ({navigation} : any) => {
                                 </Pressable>
                                 <Text
                                     className={`font-montserrat-semibold ${font(
-                                        "sm"
+                                        "base"
                                     )} ${textColor()}`}
                                 >
                                     {productSelected.qtd}
@@ -192,7 +143,7 @@ const SearchScreen = ({navigation} : any) => {
                             </View>
                             <Text
                                 className={`font-montserrat-semibold ${font(
-                                    "sm"
+                                    "base"
                                 )} ${textColor()}`}
                             >
                                 {formatNumberForReal(productSelected.price)}
@@ -206,7 +157,7 @@ const SearchScreen = ({navigation} : any) => {
                     >
                         <View
                             className={`
-                                h-12 w-12 justify-center items-center
+                                h-14 w-14 justify-center items-center
                                 border-red border-[2px] rounded-lg
                             `}
                         >
@@ -223,12 +174,12 @@ const SearchScreen = ({navigation} : any) => {
                                 }
                             }}
                             className={`
-                                h-12 justify-center items-center bg-green_400
+                                h-14 justify-center items-center bg-green_400
                                 flex-1 rounded-lg
                             `}
                         >
                             <Text
-                                className={`font-montserrat-semibold ${font('sm')} text-brown_100`}
+                                className={`font-montserrat-semibold ${font('base')} text-brown_100`}
                             >
                                 Adicionar a sacola ({formatNumberForReal(productSelected.price * productSelected.qtd)})
                             </Text>
@@ -241,4 +192,4 @@ const SearchScreen = ({navigation} : any) => {
 };
 
 
-export default SearchScreen;
+export default FavoriteScreen;

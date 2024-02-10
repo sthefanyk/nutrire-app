@@ -14,7 +14,7 @@ import People from "../assets/images/People";
 
 const ChatScreen = ({navigation}: any) => {
     const { theme, updateTheme } = useTheme();
-    const { screenTheme, textColor, font } = useDesign();
+    const { screenTheme, textColor, font, screenThemeHex } = useDesign();
 
     const data: PreviewChatType[] = [
         {
@@ -59,14 +59,13 @@ const ChatScreen = ({navigation}: any) => {
     return (
         <TouchableWithoutFeedback onPress={() => changeTheme()}>
             <View
-                className={`flex-1 w-full px-4 items-center ${screenTheme(
-                    "bg"
-                )}`}
+                className={`flex-1 w-full px-4 items-center ${screenTheme()}`}
+                style={{backgroundColor: screenThemeHex()}}
             >
                 <Text
                     className={`
                         w-full my-4
-                        ${textColor()} font-montserrat-semibold ${font("2xl")}
+                        ${textColor()} font-montserrat-semibold ${font("xl")}
                     `}
                 >
                     Suas conversas

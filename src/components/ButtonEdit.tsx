@@ -5,7 +5,7 @@ import { useDesign } from "../design/useDesign";
 import { Theme } from "../enums/Theme";
 import { useTheme } from "../context/ThemeContext";
 
-const ButtonPerfil = (props: any) => {
+const ButtonEdit = (props: any) => {
 
     const {font, textColor, textColorHex} = useDesign();
     const {theme} = useTheme();
@@ -18,17 +18,23 @@ const ButtonPerfil = (props: any) => {
 
     return (
         <Pressable
-            className={`${getButtonColor()} h-14 rounded-lg flex-row items-center justify-between px-2`}
+            className={`w-full ${getButtonColor()} h-14 rounded-lg flex-row items-center justify-between px-2`}
             onPress={props.onPress}
         >
-            <View className="flex-row items-center">
-                {props.children}
+            <View className="flex-1 flex-row items-center justify-between">
                 <Text
                     className={`${textColor()} font-montserrat-semibold ${font(
-                        "sm"
+                        "base"
                     )} ml-2`}
                 >
                     {props.text}
+                </Text>
+                <Text
+                    className={`${textColor()} font-montserrat-medium ${font(
+                        "sm"
+                    )} ml-2`}
+                >
+                    {props.textSecunday}
                 </Text>
             </View>
             <IArrowNext color={textColorHex()}/>
@@ -36,4 +42,4 @@ const ButtonPerfil = (props: any) => {
     );
 };
 
-export default ButtonPerfil;
+export default ButtonEdit;

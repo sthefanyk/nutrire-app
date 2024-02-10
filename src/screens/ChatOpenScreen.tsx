@@ -22,7 +22,7 @@ const ChatOpenScreen = () => {
     const flatListRef = useRef<FlatList<any>>(null);
     const { userData } = useAuth();
     const { theme } = useTheme();
-    const { screenTheme, textColor, font } = useDesign();
+    const { screenTheme, textColor, font, screenThemeHex } = useDesign();
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState<MessageType[]>([
         {
@@ -70,8 +70,9 @@ const ChatOpenScreen = () => {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={100}
-            className={`flex-1 w-full px-4 items-center ${screenTheme("bg")} overflow-hidden`}
+            keyboardVerticalOffset={120.5}
+            className={`flex-1 w-full px-4 items-center ${screenTheme()} overflow-hidden`}
+            style={{backgroundColor: screenThemeHex()}}
         >
             {theme === Theme.Dark ? (
                 <StatusBar backgroundColor="transparent" style="light" />
