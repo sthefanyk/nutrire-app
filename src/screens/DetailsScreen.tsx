@@ -48,19 +48,17 @@ const DetailsScreen = () => {
             <ScrollView className="flex-1">
                 <View className="flex-1 w-full px-4" style={GAP[8]}>
                     <Text
-                        className={`w-full font-montserrat-semibold ${font(
-                            "lg"
-                        )} ${textColor()}`}
+                        className={`w-full font-montserrat-semibold ${font("lg")} ${textColor()}`}
                     >
                         {productSelected.name}
                     </Text>
                     <Text
-                        className={`font-montserrat-regular ${font("sm")} ${textColor()}`}
+                        className={`font-montserrat-regular ${font("base")} ${textColor()}`}
                     >
                         {formatNumberForReal(productSelected.price)}/Und
                     </Text>
                     <Text
-                        className={`font-montserrat-regular text-xs ${textColor()}`}
+                        className={`font-montserrat-regular ${font("sm")} ${textColor()}`}
                     >
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry. Lorem Ipsum has been the industry's
@@ -81,7 +79,7 @@ const DetailsScreen = () => {
                             </Pressable>
                             <Text
                                 className={`font-montserrat-semibold ${font(
-                                    "sm"
+                                    "dase"
                                 )} ${textColor()}`}
                             >
                                 {productSelected.qtd}
@@ -96,7 +94,7 @@ const DetailsScreen = () => {
                         </View>
                         <Text
                             className={`font-montserrat-semibold ${font(
-                                "sm"
+                                "base"
                             )} ${textColor()}`}
                         >
                             {formatNumberForReal(productSelected.price * productSelected.qtd)}
@@ -109,7 +107,7 @@ const DetailsScreen = () => {
                     `}>
                         <Text
                             className={`font-montserrat-semibold ${font(
-                                "md"
+                                "base"
                             )} ${textColor()}`}
                         >
                             Comentários
@@ -173,7 +171,7 @@ const DetailsScreen = () => {
                     `}
                 >
                     <Text
-                        className={`font-montserrat-semibold ${font('sm')} text-brown_100`}
+                        className={`font-montserrat-semibold ${font('base')} text-brown_100`}
                     >
                         Adicionar a sacola ({formatNumberForReal(productSelected.price * productSelected.qtd)})
                     </Text>

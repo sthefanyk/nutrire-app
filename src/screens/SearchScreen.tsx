@@ -110,7 +110,7 @@ const SearchScreen = ({navigation} : any) => {
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
                 className="flex-1 w-full py-4"
-                showsVerticalScrollIndicator={false}
+                // showsVerticalScrollIndicator={false}
             />
 
             {isBottomSheetOpen && (
@@ -148,14 +148,12 @@ const SearchScreen = ({navigation} : any) => {
                                 {productSelected.name}
                             </Text>
                             <Text
-                                className={`font-montserrat-regular ${font(
-                                    "sm"
-                                )} ${textColor()}`}
+                                className={`font-montserrat-regular ${font("base")} ${textColor()}`}
                             >
                                 {formatNumberForReal(productSelected.price)}/Und
                             </Text>
                             <Text
-                                className={`w-full font-montserrat-regular text-xs ${textColor()}`}
+                                className={`w-full font-montserrat-regular ${font("sm")} ${textColor()}`}
                             >
                                 Lorem Ipsum is simply dummy text of the
                                 printing and typesetting industry. Lorem
@@ -178,9 +176,7 @@ const SearchScreen = ({navigation} : any) => {
                                     <IRemove />
                                 </Pressable>
                                 <Text
-                                    className={`font-montserrat-semibold ${font(
-                                        "sm"
-                                    )} ${textColor()}`}
+                                    className={`font-montserrat-semibold ${font("base")} ${textColor()}`}
                                 >
                                     {productSelected.qtd}
                                 </Text>
@@ -191,9 +187,7 @@ const SearchScreen = ({navigation} : any) => {
                                 </Pressable>
                             </View>
                             <Text
-                                className={`font-montserrat-semibold ${font(
-                                    "sm"
-                                )} ${textColor()}`}
+                                className={`font-montserrat-semibold ${font("base")} ${textColor()}`}
                             >
                                 {formatNumberForReal(productSelected.price)}
                             </Text>
@@ -228,7 +222,7 @@ const SearchScreen = ({navigation} : any) => {
                             `}
                         >
                             <Text
-                                className={`font-montserrat-semibold ${font('sm')} text-brown_100`}
+                                className={`font-montserrat-semibold ${font('base')} text-brown_100`}
                             >
                                 Adicionar a sacola ({formatNumberForReal(productSelected.price * productSelected.qtd)})
                             </Text>

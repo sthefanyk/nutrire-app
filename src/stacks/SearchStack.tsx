@@ -3,6 +3,7 @@ import Header from "../navigators/Header";
 import SearchScreen from "../screens/SearchScreen";
 import DetailsScreen from "../screens/DetailsScreen";
 import BagScreen from "../screens/BagScreen";
+import DetailsStack from "./DetailsStack";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,7 @@ const SearchStack = ({}) => {
                     props={props} 
                     back={false} 
                     bag={true}
-                    pathBack="BagSearch"
+                    pathBag="BagSearch"
                 />
             }}
         >
@@ -30,6 +31,7 @@ const SearchStack = ({}) => {
                         props={props}
                         back={true} 
                         bag={true}
+                        pathBag="BagSearch"
                     />
                 }}
             />
@@ -41,7 +43,7 @@ const SearchStack = ({}) => {
                     header: props => <Header 
                         props={props}
                         back={true} 
-                        bag={true}
+                        bag={false}
                     />
                 }}
             />

@@ -67,8 +67,8 @@ const PerfilScreen = ({navigation}: any) => {
                 <View className="flex-1 w-full">
                     <View className="w-full justify-center items-center my-2">
                         <Text className={`${textColor()} ${font('lg')} font-montserrat-semibold`}>{userData.name}</Text>
-                        <Text className={`${textColor()} text-xs font-montserrat-regular`}>@username</Text>
-                        <Text className={`${textColor()} ${font('sm')} font-montserrat-regular mt-4`}>
+                        <Text className={`${textColor()} ${font('sm')} font-montserrat-regular`}>@username</Text>
+                        <Text className={`${textColor()} ${font('base')} font-montserrat-regular mt-4`}>
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                         </Text>

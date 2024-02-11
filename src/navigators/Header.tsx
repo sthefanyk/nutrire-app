@@ -12,88 +12,67 @@ export interface Props {
     props: BottomTabHeaderProps | NativeStackHeaderProps;
     back: boolean;
     bag: boolean;
-    pathBack?: string
+    pathBag?: string
 }
 
-const Header = ({ back, bag, props, pathBack }: Props) => {
+const Header = ({ back, bag, props, pathBag }: Props) => {
     const { screenTheme, screenThemeHex, textColorHex } : any = useDesign();
 
+    const path = pathBag || "BagStack";
 
-    const path = pathBack || "BagStack";
+    const content = (
+        <View className="flex-row w-full justify-between items-center p-1 h-[56px]">
+            {back ? (
+                <Pressable
+                    className="h-12 w-12 justify-center items-center"
+                    onPress={() => {
+                        if (props.navigation.canGoBack()) {
+                            props.navigation.goBack();
+                        }
+                    }}
+                >
+                    <IBack color={textColorHex()} />
+                </Pressable>
+            ) : (<View className="h-12 w-12 justify-center items-center"></View>)}
+
+            <View className="justify-center">
+                <LogoHorizontal color={textColorHex()} />
+            </View>
+
+            {bag ? (
+                <Pressable
+                    className="h-12 w-12 justify-center items-center"
+                    onPress={() => {
+                        props.navigation.navigate(path)
+                    }}
+                >
+                    <IBag color={textColorHex()} />
+                </Pressable>
+            ) : (<View className="h-12 w-12 justify-center items-center"></View>)}
+        </View>
+    )
+
+
     if (Platform.OS === 'ios') {
         return (
             <SafeAreaView
                 className={`w-full justify-center items-center ${screenTheme()}`}
                 style={{backgroundColor: screenThemeHex()}}
             >
-                <View className="flex-row w-full justify-between items-center p-1 h-[56px]">
-                    {back ? (
-                        <Pressable
-                            className="h-12 w-12 justify-center items-center"
-                            onPress={() => {
-                                if (props.navigation.canGoBack()) {
-                                    props.navigation.goBack();
-                                }
-                            }}
-                        >
-                            <IBack color={textColorHex()} />
-                        </Pressable>
-                    ) : (<View className="h-12 w-12 justify-center items-center"></View>)}
-    
-                    <View className="justify-center">
-                        <LogoHorizontal color={textColorHex()} />
-                    </View>
-    
-                    {bag ? (
-                        <Pressable
-                            className="h-12 w-12 justify-center items-center"
-                            onPress={() => {
-                                console.log(path)
-                                props.navigation.navigate(path)
-                            }}
-                        >
-                            <IBag color={textColorHex()} />
-                        </Pressable>
-                    ) : (<View className="h-12 w-12 justify-center items-center"></View>)}
-                </View>
+                {content}
             </SafeAreaView>
         );
-    } else {
-        return (
-            <SafeAreaViewAndroid
-                className={`w-full justify-center items-center ${screenTheme()}`}
-                style={{backgroundColor: screenThemeHex()}}
-            >
-                <View className="flex-row w-full justify-between items-center p-1 h-[56px]">
-                    {back ? (
-                        <Pressable
-                            className="h-12 w-12 justify-center items-center"
-                            onPress={() => {
-                                if (props.navigation.canGoBack()) {
-                                    props.navigation.goBack();
-                                }
-                            }}
-                        >
-                            <IBack color={textColorHex()} />
-                        </Pressable>
-                    ) : (<View className="h-12 w-12 justify-center items-center"></View>)}
-    
-                    <View className="justify-center">
-                        <LogoHorizontal color={textColorHex()} />
-                    </View>
-    
-                    {bag ? (
-                        <Pressable
-                            className="h-12 w-12 justify-center items-center"
-                            onPress={() => props.navigation.navigate("BagStack")}
-                        >
-                            <IBag color={textColorHex()} />
-                        </Pressable>
-                    ) : (<View className="h-12 w-12 justify-center items-center"></View>)}
-                </View>
-            </SafeAreaViewAndroid>
-        );
     }
+
+    return (
+        <SafeAreaViewAndroid
+            className={`w-full justify-center items-center ${screenTheme()}`}
+            style={{backgroundColor: screenThemeHex()}}
+        >
+            {content}
+        </SafeAreaViewAndroid>
+    );
+    
 };
 
 export default Header;

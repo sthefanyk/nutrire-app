@@ -1,11 +1,11 @@
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useDesign } from '../design/useDesign'
 import Banner1 from '../assets/banners/Banner1';
 import Banner2 from '../assets/banners/Banner2';
 import Banner3 from '../assets/banners/Banner3';
-import Banner4 from '../assets/banners/Banner4';
 import GAP from '../design/gap';
+
+const banners = [<Banner1 />, <Banner2 />, <Banner3 />];
 
 const Banner = () => {
 
@@ -24,6 +24,14 @@ const Banner = () => {
         setCurrentBanner((prevBanner) => (prevBanner === 3 ? 1 : prevBanner + 1));
     };
 
+    const renderItem = ({item} : any) => {
+        return (
+            <View>
+                {item}
+            </View>
+        )
+    }
+
     return (
         <View
             className={`
@@ -35,6 +43,14 @@ const Banner = () => {
                 {currentBanner === 2 && <Banner2 />}
                 {currentBanner === 3 && <Banner3 />}
             </Pressable>
+
+            <FlatList
+                data={banners}
+                renderItem={renderItem}
+                horizontal={true}
+                pagingEnabled={true}
+                showsHorizontalScrollIndicator={false}
+            />
 
             <View
                 className="my-2 w-full flex-row justify-center items-center"

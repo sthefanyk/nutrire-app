@@ -25,7 +25,7 @@ const ButtonPerfil = (props: any) => {
                 {props.children}
                 <Text
                     className={`${textColor()} font-montserrat-semibold ${font(
-                        "sm"
+                        "base"
                     )} ml-2`}
                 >
                     {props.text}

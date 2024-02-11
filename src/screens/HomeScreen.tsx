@@ -12,6 +12,7 @@ import Banner from "../components/Banner";
 import CardHome from "../components/CardHome";
 import GAP from "../design/gap"
 import SearchBar from "../components/SearchBar";
+import { Carousel } from "../components/Carousel";
 
 const HomeScreen = () => {
     const { screenTheme, screenThemeHex, textColor, font } = useDesign();
@@ -38,18 +39,19 @@ const HomeScreen = () => {
                 className="flex-1 w-full mx-4"
                 showsVerticalScrollIndicator={false}
             >
-                <Banner />
+                {/* <Banner /> */}
+                <Carousel />
 
                 <Text className={`
                     mb-1 font-montserrat-semibold
                     ${textColor() + " " + font('xl')}
-                    `}>Verduras
+                    `}>Frutas
                 </Text>
 
                 <ScrollView 
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    className="w-screen"
+                    className="w-full" style={GAP[8]}
                     >
                     <View className="flex-row">
                         <CardHome />
@@ -62,7 +64,22 @@ const HomeScreen = () => {
                 <Text className={`
                     mt-4 mb-1 font-montserrat-semibold
                     ${textColor() + " " + font('xl')}
-                    `}>Frutas</Text>
+                    `}>Verduras</Text>
+                <ScrollView 
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    className="w-full" style={GAP[8]}
+                    >
+                    <CardHome />
+                    <CardHome />
+                    <CardHome />
+                    <CardHome />
+                    <CardHome />
+                </ScrollView>
+                <Text className={`
+                    mt-4 mb-1 font-montserrat-semibold
+                    ${textColor() + " " + font('xl')}
+                    `}>Legumes</Text>
                 <ScrollView 
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}

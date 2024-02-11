@@ -1,7 +1,6 @@
-import { View, Text, FlatList, Pressable, ScrollView, Alert } from "react-native";
+import { View, Text, FlatList, Pressable, Alert } from "react-native";
 import React from "react";
 import { useDesign } from "../design/useDesign";
-import { ProductBagType } from "../types/ProductBagType";
 import { useTheme } from "../context/ThemeContext";
 import { Theme } from "../enums/Theme";
 import IAdd from "../assets/icons/IAdd";
@@ -29,9 +28,7 @@ const BagScreen = () => {
                 </Text>
                 <Text
                     className={`
-                        ${textColor()} font-montserrat-semibold ${font(
-                        "base"
-                    )} text-opacity-50
+                        ${textColor()} font-montserrat-semibold ${font("base")} text-opacity-50
                     `}
                 >
                     {bag.qtd} Itens
@@ -139,12 +136,12 @@ const BagScreen = () => {
 
             <View className="w-full py-4 flex-row">
                 <View
-                    className={`border-[1px] border-green_400 px-4 justify-center rounded-lg mr-2`}
+                    className={`border-[1px] border-green_400 px-4 justify-center rounded-lg mr-2 h-12`}
                 >
                     <Text
                         className={`
                             font-montserrat-semibold 
-                            ${font("sm")} ${theme === Theme.Dark ? "text-green_300" : "text-green_400"}
+                            ${font("base")} ${theme === Theme.Dark ? "text-green_300" : "text-green_400"}
                         `}
                     >
                         Total {bag.total ? formatNumberForReal(bag.total) : formatNumberForReal(0)}
@@ -155,12 +152,12 @@ const BagScreen = () => {
                         clearBag();
                         Alert.alert('encomendando');
                     }}
-                    className={`flex-1 bg-green_400 py-2 items-center rounded-lg`}
+                    className={`flex-1 bg-green_400 h-12 justify-center items-center rounded-lg`}
                 >
                     <Text
                         className={`
                             font-montserrat-semibold text-light 
-                            ${font("sm")}
+                            ${font("base")}
                         `}
                     >
                         Encomendar

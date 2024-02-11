@@ -228,7 +228,7 @@ const RegisterScreen = ({ navigation }: any) => {
                     </Pressable>
                 )}
 
-                <View className="flex-1 justify-end pb-4 w-full items-center">
+                <View className="flex-1 justify-end pb-8 w-full items-center">
                     <Text
                         className={`
 							font-montserrat-medium text-brown_200
