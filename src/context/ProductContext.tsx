@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { ProductType } from "../types/ProductType";
 import { BagType } from "../types/BagType";
+import { productsData } from "../data/products";
 
 interface Props {
     products: ProductType[]
@@ -17,17 +18,8 @@ interface Props {
 
 export const ProductContext = createContext<Props>({} as  Props);
 
-const data: ProductType[] = [
-    { id: "id1", name: "Batata", price: 9.99, reserva: true, qtd: 0 },
-    { id: "id2", name: "Cenoura", price: 2.00, reserva: false, qtd: 0 },
-    { id: "id3", name: "Maça", price: 4.00, reserva: false, qtd: 0 },
-    { id: "id4", name: "Tomate", price: 8.50, reserva: true, qtd: 0 },
-    { id: "id5", name: "Abacate", price: 8.00, reserva: true, qtd: 0 },
-    { id: "id6", name: "Uva", price: 10.00, reserva: false, qtd: 0 },
-];
-
 export const ProductProvider = ({children}: any) => {
-    const [products, setProducts] = useState<ProductType[]>(data);
+    const [products, setProducts] = useState<ProductType[]>(productsData);
     const [bag, setBag] = useState<BagType>({
         products: [],
         qtd: 0,
@@ -124,7 +116,7 @@ export const ProductProvider = ({children}: any) => {
         };
     
         setBag(updatedBag);
-      };
+    };
 
     return (
         <ProductContext.Provider value={{ 

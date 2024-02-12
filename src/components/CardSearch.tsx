@@ -10,7 +10,7 @@ import { formatNumberForReal } from "../services/FormatService";
 
 interface Props {
     item: ListRenderItemInfo<ProductType>
-    onPress: (index: number) => void
+    onPress: (product: ProductType) => void
 }
 
 const CardSearch = ({ item, onPress }: Props) => {
@@ -25,17 +25,18 @@ const CardSearch = ({ item, onPress }: Props) => {
 
     return (
         <Pressable
-            onPress={() => onPress(item.index)}
+            onPress={() => onPress(product)}
             className={`
                 w-[46%] h-56 border-[1px] rounded-xl mb-4 mx-[2%]
                 ${getColor()} overflow-hidden border-brown_300_50
-                
             `}
         >
             <View className="flex-1 bg-brown_300_50 w-full overflow-hidden">
                 <Image
-                // source={require('../assets/images/cenoura.jpeg')}
-                // className='bg-brown_300_50 w-full h-36 rounded-xl'
+                    source={{
+                        uri: product.imagePath
+                    }}
+                    className="flex-1 w-full"
                 />
             </View>
             <View className="p-2">

@@ -132,9 +132,7 @@ const Filter = ({ setFilterOpen }: Props) => {
                 className={`bg-dark_search opacity-40 w-full h-full items-end`}
             ></View>
             <View
-                className={`
-                            absolute right-0 w-[80%] h-full items-end rounded-l-2xl
-                        `}
+                className={`absolute right-0 w-[80%] h-full items-end rounded-l-2xl`}
                 style={{ backgroundColor: screenThemeHex() }}
             >
                 <View className="flex-row w-full items-center mt-2">
@@ -143,9 +141,7 @@ const Filter = ({ setFilterOpen }: Props) => {
                     </Pressable>
 
                     <Text
-                        className={`${textColor()} ${font(
-                            "xl"
-                        )} font-montserrat-semibold`}
+                        className={`${textColor()} ${font('xl')} font-montserrat-semibold`}
                     >
                         Filtrar
                     </Text>
@@ -165,18 +161,18 @@ const Filter = ({ setFilterOpen }: Props) => {
                             >
                                 <View
                                     className={`
-                                flex-row px-2 py-1 rounded-lg border-[1.5px] border-green_300 justify-center items-center
-                                ${theme === Theme.Dark ? "" : "bg-green_100"}
-                            `}
+                                        flex-row px-2 py-1 rounded-lg border-[1px] border-green_300 
+                                        justify-center items-center
+                                        ${theme === Theme.Dark ? "" : "bg-green_100"}
+                                    `}
                                 >
                                     <IRemoveCategory />
                                     <Text
                                         key={index}
                                         className={`
-                                        text-center font-montserrat-regular ${font(
-                                            "base"
-                                        )} ${textColor()} ml-1
-                                    `}
+                                            text-center font-montserrat-regular 
+                                            ${font('base')} ${textColor()} ml-1
+                                        `}
                                     >
                                         {
                                             filtersList[item.idCategory].items[

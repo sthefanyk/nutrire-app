@@ -17,12 +17,18 @@ import Header from "./Header";
 import SearchStack from "../stacks/SearchStack";
 import PerfilStack from "../stacks/PerfilStack";
 import DetailsScreen from "../screens/DetailsScreen";
+import HomeStack from "../stacks/HomeStack";
+import RegisterProductScreen from "../screens/RegisterProductScreen";
+import { useAuth } from "../context/AuthContext";
+import { TypeUserEnum } from "../enums/TypeUserEnum";
+import INew from "../assets/icons/INew";
 
 const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
     const { screenThemeHex, textColorHex, textColor, font } = useDesign();
     const { theme } = useTheme();
+    const { userData } = useAuth();
 
     return (
         <Tab.Navigator
@@ -40,11 +46,12 @@ const Navigator = () => {
             }}
         >
             <Tab.Screen
-                name="Home"
-                component={HomeScreen}
+                name="HomeStack"
+                component={HomeStack}
                 options={{
+                    headerShown: false,
                     tabBarIcon: ({ focused }) => (
-                        <View className="justify-center items-center">
+                        <View className="justify-center items-center w-12">
                             <IHomeTab
                                 color={
                                     Theme.Dark === theme
@@ -81,13 +88,14 @@ const Navigator = () => {
                     />
                 }}
             />
+            
             <Tab.Screen
                 name="SearchStack"
                 component={SearchStack}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
-                        <View className="justify-center items-center">
+                        <View className="justify-center items-center w-12">
                             <ISearchTab
                                 color={
                                     Theme.Dark === theme
@@ -110,13 +118,51 @@ const Navigator = () => {
                     ),
                 }}
             ></Tab.Screen>
+            {
+                userData.type === TypeUserEnum.Vendedor && (
+                    <Tab.Screen
+                        name="RegisterProduct"
+                        component={RegisterProductScreen}
+                        options={{
+                            header: props => <Header
+                                props={props} 
+                                back={false} 
+                                bag={false}
+                            />,
+                            tabBarIcon: ({ focused }) => (
+                                <View className="justify-center items-center w-12">
+                                    <INew
+                                        color={
+                                            Theme.Dark === theme
+                                                ? focused
+                                                    ? COLORS.green_300
+                                                    : textColorHex()
+                                                : focused
+                                                ? COLORS.green_400
+                                                : textColorHex()
+                                        }
+                                    />
+                                    <Text className={`font-montserrat-regular text-xs ${Theme.Dark === theme
+                                                ? focused
+                                                    ? "text-green_300"
+                                                    : textColor()
+                                                : focused
+                                                ? "text-green_400"
+                                                : textColor()}`}>Novo</Text>
+                                </View>
+                            ),
+                        }}
+                    ></Tab.Screen>
+                )
+            }
+
             <Tab.Screen
                 name="ChatStack"
                 component={ChatStackScreen}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
-                        <View className="justify-center items-center">
+                        <View className="justify-center items-center w-12">
                             <IChatTab
                                 color={
                                     Theme.Dark === theme
@@ -145,7 +191,7 @@ const Navigator = () => {
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
-                        <View className="justify-center items-center">
+                        <View className="justify-center items-center w-12">
                             <IPerfilTab
                                 color={
                                     Theme.Dark === theme

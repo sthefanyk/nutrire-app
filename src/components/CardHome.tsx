@@ -3,20 +3,22 @@ import React from "react";
 import GAP from "../design/gap";
 import IAdd from "../assets/icons/IAdd";
 import { useDesign } from "../design/useDesign";
+import { ProductType } from "../types/ProductType";
+import { formatNumberForReal } from "../services/FormatService";
 
 interface Props {
-    uri: string
+    product: ProductType
 }
 
 
-const CardHome = () => {
+const CardHome = ({product}: Props) => {
 
     const { textColor, font } = useDesign();
 
     return (
         <View className="mr-2">
             <Image
-                // source={require("../assets/images/cenoura.jpeg")}
+                source={{ uri: product.imagePath}}
                 className="w-[152] h-[165] rounded-lg bg-black bg-brown_300_50"
             />
 
@@ -27,10 +29,10 @@ const CardHome = () => {
                             textColor() + " " + font("base")
                         } font-montserrat-semibold`}
                     >
-                        Batata
+                        {product.name}
                     </Text>
                     <Text className={`text-orange ${font("sm")}`}>
-                        R$ 8.99 / Kg
+                        {formatNumberForReal(product.price)} / Kg
                     </Text>
                 </View>
 

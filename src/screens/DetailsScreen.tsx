@@ -12,6 +12,8 @@ import IFav from "../assets/icons/IFav";
 import { CommentType } from "../types/CommentType";
 import { useProduct } from "../context/ProductContext";
 import { formatNumberForReal } from "../services/FormatService";
+import DetailsImage from "../components/DetailsImage";
+import { useUser } from "../context/UserContext";
 
 const comments: CommentType[] = [
     { 
@@ -28,15 +30,18 @@ const comments: CommentType[] = [
     },
 ]
 
-const DetailsScreen = () => {
+const DetailsScreen = ({route}: any) => {
 
     const { textColor, font, screenThemeHex } = useDesign();
     const { theme } = useTheme();
-    const { productSelected, setProductSelected, addProductBag } = useProduct();
+    const { addProductBag } = useUser();
+    const [qtd, setQtd] = useState(0);
+
+    const { product } = route.params;
 
     return (
         <View className={`flex-1 w-full items-center`} style={{backgroundColor: screenThemeHex()}}>
-            <View className={`w-full h-[30%] bg-green_100`}></View>
+            {/* <View className={`w-full h-[30%] bg-green_100`}></View>
             <View
                 className="w-full flex-row my-4 justify-center items-center"
                 style={GAP[8]}
@@ -44,18 +49,21 @@ const DetailsScreen = () => {
                 <View className="h-2 w-2 bg-green_300 rounded-full"></View>
                 <View className="h-2 w-2 bg-green_500 rounded-full"></View>
                 <View className="h-2 w-2 bg-green_500 rounded-full"></View>
-            </View>
+            </View> */}
+            <DetailsImage 
+                image={product.imagePath}
+            />
             <ScrollView className="flex-1">
                 <View className="flex-1 w-full px-4" style={GAP[8]}>
                     <Text
                         className={`w-full font-montserrat-semibold ${font("lg")} ${textColor()}`}
                     >
-                        {productSelected.name}
+                        {product.name}
                     </Text>
                     <Text
                         className={`font-montserrat-regular ${font("base")} ${textColor()}`}
                     >
-                        {formatNumberForReal(productSelected.price)}/Und
+                        {formatNumberForReal(product.price)}/Und
                     </Text>
                     <Text
                         className={`font-montserrat-regular ${font("sm")} ${textColor()}`}
@@ -71,10 +79,10 @@ const DetailsScreen = () => {
                         >
                             <Pressable 
                                 onPress={() => {
-                                    if (productSelected.qtd === 0) return
-                                    setProductSelected({...productSelected, qtd: productSelected.qtd - 1});
+                                    if (qtd === 0) return
+                                    setQtd(qtd => qtd - 1);
                                 }}
-                                className="bg-green_300 h-6 w-6 justify-center items-center rounded-sm">
+                                className="bg-green_300 h-7 w-7 justify-center items-center rounded-sm">
                                 <IRemove />
                             </Pressable>
                             <Text
@@ -82,13 +90,13 @@ const DetailsScreen = () => {
                                     "dase"
                                 )} ${textColor()}`}
                             >
-                                {productSelected.qtd}
+                                {qtd}
                             </Text>
                             <Pressable
                                 onPress={() => {
-                                    setProductSelected({...productSelected, qtd: productSelected.qtd + 1});
+                                    setQtd(qtd => qtd + 1);
                                 }}
-                                className="bg-green_300 h-6 w-6 justify-center items-center rounded-sm">
+                                className="bg-green_300 h-7 w-7 justify-center items-center rounded-sm">
                                 <IAdd />
                             </Pressable>
                         </View>
@@ -97,7 +105,7 @@ const DetailsScreen = () => {
                                 "base"
                             )} ${textColor()}`}
                         >
-                            {formatNumberForReal(productSelected.price * productSelected.qtd)}
+                            {formatNumberForReal(product.price * qtd)}
                         </Text>
 
                     </View>
@@ -157,10 +165,10 @@ const DetailsScreen = () => {
                 </View>
                 <Pressable
                     onPress={() => {
-                        if (productSelected.qtd !== 0) {
-                            addProductBag();
-                            setProductSelected({...productSelected, qtd: 0});
+                        if (qtd !== 0) {
+                            addProductBag(product.id, qtd);
                             Alert.alert('Produto adicionado a sacolinha')
+                            setQtd(0);
                         }else{
                             Alert.alert('Adicione a quantidade')
                         }
@@ -173,7 +181,7 @@ const DetailsScreen = () => {
                     <Text
                         className={`font-montserrat-semibold ${font('base')} text-brown_100`}
                     >
-                        Adicionar a sacola ({formatNumberForReal(productSelected.price * productSelected.qtd)})
+                        Adicionar a sacola ({formatNumberForReal(product.price * qtd)})
                     </Text>
                 </Pressable>
             </View>

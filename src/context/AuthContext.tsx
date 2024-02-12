@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { AuthType } from "../../types/AuthType";
-import { UserDataType } from "../../types/UserDataType";
-import { TokenType } from "../../types/TokenType";
-import { GetUser, Signin, Signout } from "../../services/AuthService";
+import { AuthType } from "../types/AuthType";
+import { UserDataType } from "../types/UserDataType";
+import { TokenType } from "../types/TokenType";
+import { GetUser, Signin, Signout } from "../services/AuthService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
-import { ApiDataType } from "../../types/ApiDataType";
+import { ApiDataType } from "../types/ApiDataType";
 
 export const AuthContext = createContext<AuthType>({} as  AuthType);
 
@@ -51,6 +51,7 @@ export const AuthProvider = ({children}: any) => {
         setLoading(true);
         try {
             const data: any = await Signin(email, password);
+            console.log(data)
             await AsyncStorage.setItem('@token', data?.token.token);
 
             setUserData(data.userData);

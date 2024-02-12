@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthProvider, useAuth } from "./src/context/auth";
+import { AuthProvider, useAuth } from "./src/context/AuthContext";
 
 import { useFonts } from "expo-font";
 import Splash from "./src/screens/Splash";
@@ -14,6 +14,7 @@ import { StatusBar } from "expo-status-bar";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ProductProvider } from "./src/context/ProductContext";
+import { UserProvider } from "./src/context/UserContext";
 
 LogBox.ignoreLogs(["new NativeEventEmitter"]);
 LogBox.ignoreAllLogs();
@@ -58,7 +59,9 @@ export default function App() {
                 <AuthProvider>
                     <ThemeProvider>
                         <ProductProvider>
-                            <Root />
+                            <UserProvider>
+                                <Root />
+                            </UserProvider>
                         </ProductProvider>
                     </ThemeProvider>
                 </AuthProvider>

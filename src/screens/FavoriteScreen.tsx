@@ -11,35 +11,21 @@ import IRemove from "../assets/icons/IRemove";
 import IFav from "../assets/icons/IFav";
 import { useProduct } from "../context/ProductContext";
 import { formatNumberForReal } from "../services/FormatService";
+import { ProductType } from "../types/ProductType";
+import { productsData } from "../data/products";
+import { useUser } from "../context/UserContext";
 
 const FavoriteScreen = ({navigation} : any) => {
     const { screenTheme, screenThemeHex, font, textColor } = useDesign();
-    const { productSelected, setProductSelected, products, addProductBag } = useProduct();
+
+    const { addProductBag } = useUser();
+
+    const [products, setProducts] = useState<ProductType[]>(productsData);
+    const [selectedProduct, setSelectedProduct] = useState<ProductType>({} as ProductType);
+    const [qtd, setQtd] = useState(0);
 
     const sheetRef = useRef<BottomSheet>(null);
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-
-    const handleSnapPress = useCallback((index: number) => {
-        sheetRef.current?.snapToIndex(index);
-    }, []);
-    
-    const handleSheetChange = useCallback((index: number) => {
-        if (index === 1) {
-            handleClosePress();
-            navigation.navigate('PerfilDetails');
-        }
-
-        setIsBottomSheetOpen(index !== -1);
-    }, []);
-
-    const handleClosePress = useCallback(() => {
-        sheetRef.current?.close();
-    }, []);
-    
-    const selectProduct = (index: number) => {
-        setProductSelected(products[index]);
-        handleSnapPress(0);
-    };
 
     return (
         <View
@@ -54,7 +40,11 @@ const FavoriteScreen = ({navigation} : any) => {
             <FlatList
                 data={products}
                 renderItem={(item) => (
-                    <CardSearch item={item} onPress={selectProduct} />
+                    <CardSearch item={item} onPress={(product: ProductType) => {
+                        setSelectedProduct(product)
+                        setQtd(0)
+                        sheetRef.current?.snapToIndex(0);
+                    }} />
                 )}
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
@@ -70,7 +60,15 @@ const FavoriteScreen = ({navigation} : any) => {
                 ref={sheetRef}
                 index={-1}
                 snapPoints={["75%", "100%"]}
-                onChange={handleSheetChange}
+                onChange={(index: number) => {
+                    if (index === 1) {
+                        sheetRef.current?.close();
+                        if (selectedProduct) {
+                            navigation.navigate('Details', { product: selectedProduct });
+                        }
+                    }
+                    setIsBottomSheetOpen(index !== -1);
+                }}
                 enablePanDownToClose={true}
                 animateOnMount={false}
                 backgroundStyle={{ backgroundColor: screenThemeHex() }}
@@ -94,14 +92,14 @@ const FavoriteScreen = ({navigation} : any) => {
                                     "xl"
                                 )} ${textColor()}`}
                             >
-                                {productSelected.name}
+                                {selectedProduct.name}
                             </Text>
                             <Text
                                 className={`font-montserrat-regular ${font(
                                     "sm"
                                 )} ${textColor()}`}
                             >
-                                {formatNumberForReal(productSelected.price)}/Und
+                                {formatNumberForReal(selectedProduct.price)}/Und
                             </Text>
                             <Text
                                 className={`font-montserrat-regular ${font(
@@ -122,8 +120,8 @@ const FavoriteScreen = ({navigation} : any) => {
                             >
                                 <Pressable
                                     onPress={() => {
-                                        if (productSelected.qtd === 0) return
-                                        setProductSelected({...productSelected, qtd: productSelected.qtd - 1});
+                                        if (selectedProduct.qtd === 0) return
+                                        setQtd(qtd => qtd - 1);
                                     }}
                                     className="bg-green_300 h-6 w-6 justify-center items-center rounded-sm">
                                     <IRemove />
@@ -133,10 +131,10 @@ const FavoriteScreen = ({navigation} : any) => {
                                         "base"
                                     )} ${textColor()}`}
                                 >
-                                    {productSelected.qtd}
+                                    {qtd}
                                 </Text>
                                 <Pressable
-                                    onPress={() => setProductSelected({...productSelected, qtd: productSelected.qtd + 1})}
+                                    onPress={() => setQtd(qtd => qtd + 1)}
                                     className="bg-green_300 h-6 w-6 justify-center items-center rounded-sm">
                                     <IAdd />
                                 </Pressable>
@@ -146,7 +144,7 @@ const FavoriteScreen = ({navigation} : any) => {
                                     "base"
                                 )} ${textColor()}`}
                             >
-                                {formatNumberForReal(productSelected.price)}
+                                {formatNumberForReal(selectedProduct.price)}
                             </Text>
                         </View>
                     </View>
@@ -165,10 +163,10 @@ const FavoriteScreen = ({navigation} : any) => {
                         </View>
                         <Pressable
                             onPress={() => {
-                                if (productSelected.qtd !== 0) {
-                                    addProductBag();
+                                if (qtd !== 0) {
+                                    addProductBag(selectedProduct.id, qtd);
                                     Alert.alert('Produto adicionado a sacolinha');
-                                    setProductSelected({...productSelected, qtd: 0});
+                                    setQtd(0);
                                 }else{
                                     Alert.alert('Adicione a quantidade')
                                 }
@@ -181,7 +179,7 @@ const FavoriteScreen = ({navigation} : any) => {
                             <Text
                                 className={`font-montserrat-semibold ${font('base')} text-brown_100`}
                             >
-                                Adicionar a sacola ({formatNumberForReal(productSelected.price * productSelected.qtd)})
+                                Adicionar a sacola ({formatNumberForReal(selectedProduct.price * qtd)})
                             </Text>
                         </Pressable>
                     </View>

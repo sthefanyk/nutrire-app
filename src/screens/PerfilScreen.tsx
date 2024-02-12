@@ -8,7 +8,7 @@ import {
     View,
 } from "react-native";
 import React from "react";
-import { useAuth } from "../context/auth";
+import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { useDesign } from "../design/useDesign";
 import { Theme } from "../enums/Theme";

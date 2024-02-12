@@ -10,14 +10,15 @@ interface InputProps {
     onChangeText: (text: string) => void;
     placeholder: string;
     text: string;
+    className?: string
 }
 
-const InputText = ({ value, onChangeText, placeholder, text }: InputProps) => {
+const InputText = ({ value, onChangeText, placeholder, text, className }: InputProps) => {
     const { theme } = useTheme();
     const { font, textColor, placeholderTextColor, inputTheme } = useDesign();
 
     return (
-        <View className="w-full items-center" style={GAP[4]}>
+        <View className={`w-full items-center ${className}`} style={GAP[4]}>
             <Text
                 className={`
                     font-montserrat-semibold w-full

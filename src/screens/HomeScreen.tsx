@@ -1,4 +1,6 @@
 import {
+    FlatList,
+    Pressable,
     ScrollView,
     Text,
     View,
@@ -13,11 +15,20 @@ import CardHome from "../components/CardHome";
 import GAP from "../design/gap"
 import SearchBar from "../components/SearchBar";
 import { Carousel } from "../components/Carousel";
+import { ProductType } from "../types/ProductType";
+import { useProduct } from "../context/ProductContext";
+import { productsCategoriesData } from "../data/products";
 
-const HomeScreen = () => {
+
+const HomeScreen = ({navigation}: any) => {
     const { screenTheme, screenThemeHex, textColor, font } = useDesign();
+    const { setProductSelected } = useProduct();
 
     const [search, setSearch] = useState("");
+    const [products, setProducts] = useState(productsCategoriesData);
+    
+
+    
 
     return (
         <View
@@ -39,58 +50,32 @@ const HomeScreen = () => {
                 className="flex-1 w-full mx-4"
                 showsVerticalScrollIndicator={false}
             >
-                {/* <Banner /> */}
                 <Carousel />
 
-                <Text className={`
-                    mb-1 font-montserrat-semibold
-                    ${textColor() + " " + font('xl')}
-                    `}>Frutas
-                </Text>
+                {
+                    products.map((item) => {
+                        return (
+                            <View key={item.name} className="mb-4">
+                                <Text className={`
+                                    mb-1 font-montserrat-semibold
+                                    ${textColor() + " " + font('xl')}
+                                    `}>{item.name}
+                                </Text>
 
-                <ScrollView 
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    className="w-full" style={GAP[8]}
-                    >
-                    <View className="flex-row">
-                        <CardHome />
-                        <CardHome />
-                        <CardHome />
-                        <CardHome />
-                        <CardHome />
-                    </View>
-                </ScrollView>
-                <Text className={`
-                    mt-4 mb-1 font-montserrat-semibold
-                    ${textColor() + " " + font('xl')}
-                    `}>Verduras</Text>
-                <ScrollView 
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    className="w-full" style={GAP[8]}
-                    >
-                    <CardHome />
-                    <CardHome />
-                    <CardHome />
-                    <CardHome />
-                    <CardHome />
-                </ScrollView>
-                <Text className={`
-                    mt-4 mb-1 font-montserrat-semibold
-                    ${textColor() + " " + font('xl')}
-                    `}>Legumes</Text>
-                <ScrollView 
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    className="w-full" style={GAP[8]}
-                    >
-                    <CardHome />
-                    <CardHome />
-                    <CardHome />
-                    <CardHome />
-                    <CardHome />
-                </ScrollView>   
+                                <FlatList
+                                    data={item.products}
+                                    horizontal
+                                    renderItem={({item}) => <Pressable
+                                            onPress={() => {navigation.navigate('DetailsHome', {product: item})}}
+                                        ><CardHome  product={item} />
+                                        </Pressable>
+                                    }
+                                    showsHorizontalScrollIndicator={false}
+                                />
+                            </View>
+                        )
+                    })
+                }
                 <View className="h-10"></View>
             </ScrollView>
         </View>

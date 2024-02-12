@@ -2,6 +2,7 @@ import {
     Alert,
     Dimensions,
     FlatList,
+    Image,
     Pressable,
     Text,
     View,
@@ -20,6 +21,9 @@ import IFav from "../assets/icons/IFav";
 import { useProduct } from "../context/ProductContext";
 import { formatNumberForReal } from "../services/FormatService";
 import Filter from "../components/Filter";
+import { ProductType } from "../types/ProductType";
+import { useUser } from "../context/UserContext";
+import { productsData } from "../data/products";
 
 const SearchScreen = ({ navigation }: any) => {
     const {
@@ -28,41 +32,40 @@ const SearchScreen = ({ navigation }: any) => {
         font,
         textColor,
     } = useDesign();
-    const { productSelected, setProductSelected, products, addProductBag } =
-        useProduct();
+
+    const { addProductBag } = useUser();
+    
+    const [products, setProducts] = useState<ProductType[]>(productsData);
+    const [selectedProduct, setSelectedProduct] = useState<ProductType>({} as ProductType);
+    const [qtd, setQtd] = useState(0);
+    
     const [search, setSearch] = useState("");
     const [filterOpen, setFilterOpen] = useState(false);
-
     const [selectCategory, setSelectCategory] = useState("Todos");
+    
     const Tab = createTab();
 
     const sheetRef = useRef<BottomSheet>(null);
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
+    useEffect(() => {
+        const filtered = productsData.filter((product) =>
+          product.name.toLowerCase().includes(search.toLowerCase())
+        );
+        setProducts(filtered);
+      }, [search]);
+
     const changeSelect = (name: string) => {
-        setSelectCategory(name);
-    };
 
-    const handleSnapPress = useCallback((index: number) => {
-        sheetRef.current?.snapToIndex(index);
-    }, []);
-
-    const handleSheetChange = useCallback((index: number) => {
-        if (index === 1) {
-            handleClosePress();
-            navigation.navigate("Details");
+        if (name === "Todos") {
+            setProducts(productsData);
+            setSelectCategory(name);
+            return
         }
 
-        setIsBottomSheetOpen(index !== -1);
-    }, []);
-
-    const handleClosePress = useCallback(() => {
-        sheetRef.current?.close();
-    }, []);
-
-    const selectProduct = (index: number) => {
-        setProductSelected(products[index]);
-        handleSnapPress(0);
+        const productsFilter = productsData.filter(product => product.category.toLowerCase() === name.toLowerCase())
+        setProducts(productsFilter);
+        setSelectCategory(name);
     };
 
     return (
@@ -116,12 +119,16 @@ const SearchScreen = ({ navigation }: any) => {
             <FlatList
                 data={products}
                 renderItem={(item) => (
-                    <CardSearch item={item} onPress={selectProduct} />
+                    <CardSearch item={item} onPress={(product: ProductType) => {
+                        setSelectedProduct(product)
+                        setQtd(0)
+                        sheetRef.current?.snapToIndex(0);
+                    }} />
                 )}
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
-                className="flex-1 w-full py-4"
-                // showsVerticalScrollIndicator={false}
+                className="flex-1 w-full py-4 mb-4"
+                ItemSeparatorComponent={() => <View className="w-4 h-2"></View>}
             />
 
             {isBottomSheetOpen && (
@@ -132,14 +139,29 @@ const SearchScreen = ({ navigation }: any) => {
                 ref={sheetRef}
                 index={-1}
                 snapPoints={["75%", "100%"]}
-                onChange={handleSheetChange}
+                onChange={(index: number) => {
+                    if (index === 1) {
+                        sheetRef.current?.close();
+                        if (selectedProduct) {
+                            navigation.navigate('Details', { product: selectedProduct });
+                        }
+                    }
+                    setIsBottomSheetOpen(index !== -1);
+                }}
                 enablePanDownToClose={true}
                 animateOnMount={false}
                 backgroundStyle={{ backgroundColor: screenThemeHex() }}
             >
                 <View className={`h-[74%] justify-between px-6`}>
                     <View>
-                        <View className="w-full h-[200px] bg-brown_300_50 rounded-md"></View>
+                        <View className="w-full h-[200px] bg-brown_300_50 rounded-md overflow-hidden">
+                            <Image
+                                source={{
+                                    uri: selectedProduct.imagePath
+                                }}
+                                className="flex-1 w-full"
+                            />
+                        </View>
 
                         <View
                             className="w-full flex-row h-4 mt-4 justify-center items-center"
@@ -156,14 +178,14 @@ const SearchScreen = ({ navigation }: any) => {
                                     "lg"
                                 )} ${textColor()}`}
                             >
-                                {productSelected.name}
+                                {selectedProduct.name}
                             </Text>
                             <Text
                                 className={`font-montserrat-regular ${font(
                                     "base"
                                 )} ${textColor()}`}
                             >
-                                {formatNumberForReal(productSelected.price)}/Und
+                                {formatNumberForReal(selectedProduct.price)}/Und
                             </Text>
                             <Text
                                 className={`w-full font-montserrat-regular ${font(
@@ -183,13 +205,10 @@ const SearchScreen = ({ navigation }: any) => {
                             >
                                 <Pressable
                                     onPress={() => {
-                                        if (productSelected.qtd === 0) return;
-                                        setProductSelected({
-                                            ...productSelected,
-                                            qtd: productSelected.qtd - 1,
-                                        });
+                                        if (qtd === 0) return;
+                                        setQtd(qtd => qtd - 1);
                                     }}
-                                    className="bg-green_300 h-6 w-6 justify-center items-center rounded-sm"
+                                    className="bg-green_300 h-7 w-7 justify-center items-center rounded-sm"
                                 >
                                     <IRemove />
                                 </Pressable>
@@ -198,16 +217,11 @@ const SearchScreen = ({ navigation }: any) => {
                                         "base"
                                     )} ${textColor()}`}
                                 >
-                                    {productSelected.qtd}
+                                    {qtd}
                                 </Text>
                                 <Pressable
-                                    onPress={() =>
-                                        setProductSelected({
-                                            ...productSelected,
-                                            qtd: productSelected.qtd + 1,
-                                        })
-                                    }
-                                    className="bg-green_300 h-6 w-6 justify-center items-center rounded-sm"
+                                    onPress={() => setQtd(qtd => qtd + 1)}
+                                    className="bg-green_300 h-7 w-7 justify-center items-center rounded-sm"
                                 >
                                     <IAdd />
                                 </Pressable>
@@ -217,7 +231,7 @@ const SearchScreen = ({ navigation }: any) => {
                                     "base"
                                 )} ${textColor()}`}
                             >
-                                {formatNumberForReal(productSelected.price)}
+                                {formatNumberForReal(selectedProduct.price)}
                             </Text>
                         </View>
                     </View>
@@ -236,15 +250,11 @@ const SearchScreen = ({ navigation }: any) => {
                         </View>
                         <Pressable
                             onPress={() => {
-                                if (productSelected.qtd !== 0) {
-                                    addProductBag();
-                                    Alert.alert(
-                                        "Produto adicionado a sacolinha"
-                                    );
-                                    setProductSelected({
-                                        ...productSelected,
-                                        qtd: 0,
-                                    });
+                                if (qtd !== 0) {
+                                    addProductBag(selectedProduct.id, qtd);
+
+                                    Alert.alert('Produto adicionado a sacolinha');
+                                    setQtd(0);
                                 } else {
                                     Alert.alert("Adicione a quantidade");
                                 }
@@ -261,7 +271,7 @@ const SearchScreen = ({ navigation }: any) => {
                             >
                                 Adicionar a sacola (
                                 {formatNumberForReal(
-                                    productSelected.price * productSelected.qtd
+                                    selectedProduct.price * qtd
                                 )}
                                 )
                             </Text>

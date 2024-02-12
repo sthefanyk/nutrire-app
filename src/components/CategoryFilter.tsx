@@ -4,16 +4,19 @@ import { useDesign } from "../design/useDesign";
 import IUp from "../assets/icons/IUp";
 import IDown from "../assets/icons/IDown";
 import { FilterType } from "../types/FilterType";
+import { Theme } from "../enums/Theme";
+import { useTheme } from "../context/ThemeContext";
 
 interface Props {
-    idCategory: number
-    filter: FilterType
-    handleAddFilter: (idCategory: number, idItem: number) => void
+    idCategory: number;
+    filter: FilterType;
+    handleAddFilter: (idCategory: number, idItem: number) => void;
 }
 
-const CategoryFilter = ({idCategory, filter, handleAddFilter}: Props) => {
-    const { inputTheme, textColor, font, textColorHex} = useDesign();
+const CategoryFilter = ({ idCategory, filter, handleAddFilter }: Props) => {
+    const { inputTheme, textColor, font, textColorHex } = useDesign();
     const [isOpen, setIsOpen] = useState(false);
+    const { theme } = useTheme();
 
     return (
         <View className="w-full">
@@ -27,36 +30,46 @@ const CategoryFilter = ({idCategory, filter, handleAddFilter}: Props) => {
                         {filter.category}
                     </Text>
 
-                    <Pressable onPress={() => setIsOpen(stt => !stt)}>
-                        {isOpen ? <IUp color={textColorHex()}/> : <IDown color={textColorHex()}/>}
+                    <Pressable onPress={() => setIsOpen((stt) => !stt)}>
+                        {isOpen ? (
+                            <IUp color={textColorHex()} />
+                        ) : (
+                            <IDown color={textColorHex()} />
+                        )}
                     </Pressable>
                 </View>
 
-                {
-                    isOpen && (
-                        
-                        <View className="flex-row flex-wrap gap-2 mt-1">
-                            {
-                                filter.items.map(item => <Pressable
-                                    key={item.id}
-                                    onPress={() => handleAddFilter(idCategory,  item.id)}
-                                >
-                                    <Text
-                                        className={`
-                                            px-2 py-1 rounded-lg border-[1.5px] 
-                                            ${item.active ? "border-green_300 bg-green_100" : 'border-brown_300_50'}
+                {isOpen && (
+                    <View className="flex-row flex-wrap gap-2 mt-1">
+                        {filter.items.map((item) => (
+                            <Pressable
+                                key={item.id}
+                                onPress={() =>
+                                    handleAddFilter(idCategory, item.id)
+                                }
+                            >
+                                <Text
+                                    className={`
+                                            px-2 py-1 rounded-lg border-[1px] 
+                                            ${
+                                                item.active
+                                                    ? theme === Theme.Dark
+                                                        ? "border-green_300"
+                                                        : "border-green_300 bg-green_100"
+                                                    : "border-brown_300_50"
+                                            }
+                                            
                                             text-center font-montserrat-regular ${font(
                                                 "base"
                                             )} ${textColor()}
-                                        `}>{item.name}</Text>
-                                    </Pressable>
-                                )
-                            }
-                        </View>
-                    )
-                }
-
-               
+                                        `}
+                                >
+                                    {item.name}
+                                </Text>
+                            </Pressable>
+                        ))}
+                    </View>
+                )}
             </View>
         </View>
     );

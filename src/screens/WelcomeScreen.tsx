@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import { COLORS } from "../design/Colors";
 import { LoginType } from "../types/LoginType";
-import { useAuth } from "../context/auth";
+import { useAuth } from "../context/AuthContext";
 import JaoWaving from "../assets/svgs/mascot/small/JaoWaving";
 
 import { KeyboardAvoidingView, Platform } from "react-native";
