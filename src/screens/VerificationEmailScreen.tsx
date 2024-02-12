@@ -8,16 +8,7 @@ import GAP from "../design/gap";
 const VerificationEmailScreen = ({navigation}:any) => {
 
     const { theme } = useTheme();
-    const { font, screenThemeHex, textColor } = useDesign();
-
-
-    const getInputTheme = () => {
-        if (theme === Theme.Normal) return "bg-light";
-
-        if (theme === Theme.Light) return "bg-green_100_50";
-
-        if (theme === Theme.Dark) return "bg-dark_search";
-    };
+    const { font, screenThemeHex, textColor, inputTheme } = useDesign();
 
     return (
         <View className="flex-1 w-full px-4 items-center" style={[{backgroundColor: screenThemeHex()}, GAP[20]]}>
@@ -48,16 +39,16 @@ const VerificationEmailScreen = ({navigation}:any) => {
             </Text>
 
             <View className="flex-row" style={GAP[16]}>
-                <View className={`flex-row ${getInputTheme()} p-4 rounded-lg w-14 h-14`}>
+                <View className={`flex-row ${inputTheme()} p-4 rounded-lg w-14 h-14`}>
                 
                 </View>
-                <View className={`flex-row ${getInputTheme()} p-4 rounded-lg w-14 h-14`}>
+                <View className={`flex-row ${inputTheme()} p-4 rounded-lg w-14 h-14`}>
                 
                 </View>
-                <View className={`flex-row ${getInputTheme()} p-4 rounded-lg w-14 h-14`}>
+                <View className={`flex-row ${inputTheme()} p-4 rounded-lg w-14 h-14`}>
                     
                 </View>
-                <View className={`flex-row ${getInputTheme()} p-4 rounded-lg w-14 h-14`}>
+                <View className={`flex-row ${inputTheme()} p-4 rounded-lg w-14 h-14`}>
                     
                 </View>
             </View>

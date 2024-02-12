@@ -12,6 +12,7 @@ export interface DesignType {
     bgColorInverse: (props: string) => string;
     screenThemeHex: () => string;
     textColorHex: () => string;
+    inputTheme: () => string;
 }
 
 export const useDesign = (): DesignType => {
@@ -139,6 +140,16 @@ export const useDesign = (): DesignType => {
         return COLORS.brown_300;
     };
 
+    const inputTheme = () => {
+        if (theme === Theme.Normal) return "bg-light";
+
+        if (theme === Theme.Light) return "bg-green_100_50";
+
+        if (theme === Theme.Dark) return "bg-dark_search";
+
+        return "bg-light";
+    };
+
     return {
         font,
         textColor,
@@ -147,6 +158,7 @@ export const useDesign = (): DesignType => {
         logoColor,
         bgColorInverse,
         screenThemeHex,
-        textColorHex
+        textColorHex,
+        inputTheme
     };
 };

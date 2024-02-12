@@ -13,19 +13,12 @@ interface InputProps {
     onChangeText: (text: string) => void;
     placeholder: string;
     text: string;
+    handleFilter: () => void
 }
 
-const SearchBarFilter = ({ value, onChangeText, placeholder }: InputProps) => {
+const SearchBarFilter = ({ value, onChangeText, placeholder, handleFilter }: InputProps) => {
     const { theme } = useTheme();
-    const { font, textColor, placeholderTextColor } = useDesign();
-
-    const getInputTheme = () => {
-        if (theme === Theme.Normal) return "bg-light";
-
-        if (theme === Theme.Light) return "bg-green_100_50";
-
-        if (theme === Theme.Dark) return "bg-dark_search";
-    };
+    const { font, textColor, placeholderTextColor, inputTheme } = useDesign();
 
     const getIconColor = () => {
         if (theme === Theme.Normal) return COLORS.brown_300_50;
@@ -39,7 +32,7 @@ const SearchBarFilter = ({ value, onChangeText, placeholder }: InputProps) => {
         <View
             className={`
               flex-row justify-center items-center w-full h-14 py-4 rounded-full
-              ${getInputTheme()}
+              ${inputTheme()}
             `}
             style={GAP[8]}
         >
@@ -53,7 +46,7 @@ const SearchBarFilter = ({ value, onChangeText, placeholder }: InputProps) => {
                     " " +
                     textColor() +
                     " " +
-                    getInputTheme()
+                    inputTheme()
                 }
                 
             `}
@@ -63,7 +56,7 @@ const SearchBarFilter = ({ value, onChangeText, placeholder }: InputProps) => {
                 autoCapitalize="none"
                 onChangeText={onChangeText}
             />
-            <Pressable onPress={() => {}}>
+            <Pressable onPress={handleFilter}>
                 <IFilter color={getIconColor()} />
             </Pressable>
         </View>

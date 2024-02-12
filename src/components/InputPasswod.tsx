@@ -22,16 +22,8 @@ const InputPassword = ({
     text,
 }: InputProps) => {
     const { theme } = useTheme();
-    const { font, textColor, placeholderTextColor } = useDesign();
+    const { font, textColor, placeholderTextColor, inputTheme } = useDesign();
     const [viewPassword, setViewPassword] = useState(true);
-
-    const getInputTheme = () => {
-        if (theme === Theme.Normal) return "bg-light";
-
-        if (theme === Theme.Light) return "bg-green_100_50";
-
-        if (theme === Theme.Dark) return "bg-dark_search";
-    };
 
     const getIconColor = () => {
         if (theme === Theme.Normal) return COLORS.brown_300_50;
@@ -55,7 +47,7 @@ const InputPassword = ({
             <View
                 className={`
               flex-row justify-center items-center w-full h-12 pl-5 py-2 rounded-lg
-              ${getInputTheme()}
+              ${inputTheme()}
             `}
                 style={GAP[8]}
             >
@@ -68,7 +60,7 @@ const InputPassword = ({
                     " " +
                     textColor() +
                     " " +
-                    getInputTheme()
+                    inputTheme()
                 }
                 
             `}

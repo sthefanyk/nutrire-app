@@ -15,18 +15,10 @@ interface InputProps {
 
 const InputMenssage = ({ value, onChangeText, placeholder, handleSubmit }: InputProps) => {
     const { theme } = useTheme();
-    const { font, textColor, placeholderTextColor, textColorHex } = useDesign();
-
-    const getInputTheme = () => {
-        if (theme === Theme.Normal) return "bg-light";
-
-        if (theme === Theme.Light) return "bg-green_100_50";
-
-        if (theme === Theme.Dark) return "bg-dark_search";
-    };
+    const { font, textColor, placeholderTextColor, textColorHex, inputTheme } = useDesign();
 
     return (
-        <View className={`flex-row w-full items-center ${getInputTheme()} rounded-lg`}>
+        <View className={`flex-row w-full items-center ${inputTheme()} rounded-lg`}>
             <TextInput
                 className={`
                     flex-1 h-14 px-5 py-4 font-montserrat-regular

@@ -14,15 +14,7 @@ interface InputProps {
 
 const InputText = ({ value, onChangeText, placeholder, text }: InputProps) => {
     const { theme } = useTheme();
-    const { font, textColor, placeholderTextColor } = useDesign();
-
-    const getInputTheme = () => {
-        if (theme === Theme.Normal) return "bg-light";
-
-        if (theme === Theme.Light) return "bg-green_100_50";
-
-        if (theme === Theme.Dark) return "bg-dark_search";
-    };
+    const { font, textColor, placeholderTextColor, inputTheme } = useDesign();
 
     return (
         <View className="w-full items-center" style={GAP[4]}>
@@ -44,7 +36,7 @@ const InputText = ({ value, onChangeText, placeholder, text }: InputProps) => {
                         " " +
                         textColor() +
                         " " +
-                        getInputTheme()
+                        inputTheme()
                     }
                 `}
                 placeholder={placeholder}

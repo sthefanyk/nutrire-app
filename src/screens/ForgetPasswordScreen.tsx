@@ -10,16 +10,7 @@ import GAP from "../design/gap";
 const ForgetPasswordScreen = ({navigation}: any) => {
 
     const { theme } = useTheme();
-    const { font, screenThemeHex, textColor } = useDesign();
-
-
-    const getInputTheme = () => {
-        if (theme === Theme.Normal) return "bg-light";
-
-        if (theme === Theme.Light) return "bg-green_100_50";
-
-        if (theme === Theme.Dark) return "bg-dark_search";
-    };
+    const { font, screenThemeHex, textColor, inputTheme } = useDesign();
 
     return (
         <View className="flex-1 w-full px-4 items-center" style={[{backgroundColor: screenThemeHex()}, GAP[20]]}>
@@ -41,7 +32,7 @@ const ForgetPasswordScreen = ({navigation}: any) => {
                 Selecione qual contato deseja usar para redefinir sua senha
             </Text>
 
-            <View className={`flex-row ${getInputTheme()} p-4 rounded-lg w-full`}>
+            <View className={`flex-row ${inputTheme()} p-4 rounded-lg w-full`}>
                 <IEmail />
                 <View className="ml-4">
                     <Text
@@ -63,7 +54,7 @@ const ForgetPasswordScreen = ({navigation}: any) => {
                 </View>
             </View>
 
-            <View className={`flex-row ${getInputTheme()} p-4 rounded-lg w-full`}>
+            <View className={`flex-row ${inputTheme()} p-4 rounded-lg w-full`}>
                 <IPhone />
                 <View className="ml-4">
                     <Text
