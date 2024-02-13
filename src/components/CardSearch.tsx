@@ -7,6 +7,8 @@ import { useDesign } from "../design/useDesign";
 import IFav from "../assets/icons/IFav";
 import { COLORS } from "../design/Colors";
 import { formatNumberForReal } from "../services/FormatService";
+import { useUser } from "../context/UserContext";
+import IFavActive from "../assets/icons/IFavActive";
 
 interface Props {
     item: ListRenderItemInfo<ProductType>
@@ -15,8 +17,10 @@ interface Props {
 
 const CardSearch = ({ item, onPress }: Props) => {
     const product = item.item;
+
     const { theme } = useTheme();
     const { font, textColor } = useDesign();
+    const { isFav, AddFavorite, RemoveFavorite } = useUser();
 
     const getColor = () => {
         if (theme === Theme.Dark) return "bg-dark";
@@ -71,10 +75,22 @@ const CardSearch = ({ item, onPress }: Props) => {
                 >
                     {formatNumberForReal(product.price)}
                 </Text>
-                <IFav
-                    color={COLORS.red}
-                    className="absolute right-0 bottom-0"
-                />
+
+                <View className="absolute right-0 bottom-0 justify-center items-center h-8 w-8">
+                    {
+                        isFav(product.id) ? (
+                            <Pressable onPress={() => RemoveFavorite(product.id)}>
+                                <IFavActive />
+                            </Pressable>
+                        ) : (
+                            <Pressable onPress={() => AddFavorite(product.id)}>
+                                <IFav />
+                            </Pressable>
+                        )
+                    }
+
+                </View>
+
             </View>
         </Pressable>
     );

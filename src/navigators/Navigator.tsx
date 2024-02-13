@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useNavigation } from "@react-navigation/native";
 import { useDesign } from "../design/useDesign";
 import IHomeTab from "../assets/icons/IHomeTab";
 import ISearchTab from "../assets/icons/ISearchTab";
@@ -30,9 +31,12 @@ const Navigator = () => {
     const { theme } = useTheme();
     const { userData } = useAuth();
 
+    const navigation = useNavigation();
+
     return (
         <Tab.Navigator
             screenOptions={{
+                unmountOnBlur: true,
                 tabBarHideOnKeyboard: true,
                 tabBarShowLabel: false,
                 tabBarStyle: {
@@ -51,7 +55,7 @@ const Navigator = () => {
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
-                        <View className="justify-center items-center w-12">
+                        <View className="justify-center items-center">
                             <IHomeTab
                                 color={
                                     Theme.Dark === theme
@@ -95,7 +99,7 @@ const Navigator = () => {
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
-                        <View className="justify-center items-center w-12">
+                        <View className="justify-center items-center">
                             <ISearchTab
                                 color={
                                     Theme.Dark === theme
@@ -130,7 +134,7 @@ const Navigator = () => {
                                 bag={false}
                             />,
                             tabBarIcon: ({ focused }) => (
-                                <View className="justify-center items-center w-12">
+                                <View className="justify-center items-center">
                                     <INew
                                         color={
                                             Theme.Dark === theme
@@ -162,7 +166,7 @@ const Navigator = () => {
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
-                        <View className="justify-center items-center w-12">
+                        <View className="justify-center items-center">
                             <IChatTab
                                 color={
                                     Theme.Dark === theme
@@ -191,7 +195,7 @@ const Navigator = () => {
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ focused }) => (
-                        <View className="justify-center items-center w-12">
+                        <View className="justify-center items-center">
                             <IPerfilTab
                                 color={
                                     Theme.Dark === theme
@@ -213,6 +217,7 @@ const Navigator = () => {
                         </View>
                     ),
                 }}
+                
             ></Tab.Screen>
         </Tab.Navigator>
     );

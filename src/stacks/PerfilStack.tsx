@@ -7,6 +7,7 @@ import Header from "../navigators/Header";
 import FavoriteScreen from "../screens/FavoriteScreen";
 import DetailsScreen from "../screens/DetailsScreen";
 import OrderScreen from "../screens/OrderScreen";
+import NoFavotiresScreen from "../screens/NoFavoritesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,10 +19,12 @@ const PerfilStack = () => {
             screenOptions={{
                 headerShown: true,
                 headerStyle: { backgroundColor: screenThemeHex() },
+                
                 header: props => <Header 
                     props={props} 
                     back={false} 
                     bag={false}
+                    pathBag="BagPerfil"
                 />
             }}
         >
@@ -32,6 +35,7 @@ const PerfilStack = () => {
                         back={true}
                         bag={false}
                         props={props}
+                        pathBag="BagPerfil"
                     />
                 }}
             />
@@ -41,6 +45,7 @@ const PerfilStack = () => {
                         back={true}
                         bag={true}
                         props={props}
+                        pathBag="BagPerfil"
                     />
                 }}
             />
@@ -53,6 +58,7 @@ const PerfilStack = () => {
                         props={props}
                         back={true} 
                         bag={true}
+                        pathBag="BagPerfil"
                     />
                 }}
             />
@@ -65,6 +71,33 @@ const PerfilStack = () => {
                         props={props}
                         back={true}
                         bag={true}
+                        pathBag="BagPerfil"
+                    />
+                }}
+            />
+            <Stack.Screen
+                name="NoFavorites"
+                component={NoFavotiresScreen}
+                options={{
+                    headerBackVisible: false,
+                    header: props => <Header 
+                        props={props}
+                        back={true}
+                        bag={true}
+                        pathBag="BagPerfil"
+                    />
+                }}
+            />
+            <Stack.Screen
+                name="BagPerfil"
+                component={BagScreen}
+                options={{
+                    headerBackVisible: false,
+                    header: props => <Header 
+                        props={props}
+                        back={true} 
+                        bag={false}
+                        pathBag="BagPerfil"
                     />
                 }}
             />

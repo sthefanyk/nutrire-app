@@ -1,4 +1,4 @@
-import { Alert, FlatList, Pressable, Text, View } from "react-native";
+import { Alert, FlatList, Image, Pressable, Text, View } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
 import { useDesign } from "../design/useDesign";
 import createTab from "../navigators/Tab";
@@ -14,11 +14,12 @@ import { formatNumberForReal } from "../services/FormatService";
 import { ProductType } from "../types/ProductType";
 import { productsData } from "../data/products";
 import { useUser } from "../context/UserContext";
+import IFavActive from "../assets/icons/IFavActive";
 
 const FavoriteScreen = ({navigation} : any) => {
     const { screenTheme, screenThemeHex, font, textColor } = useDesign();
 
-    const { addProductBag } = useUser();
+    const { addProductBag, getFavsProducts, isFav, RemoveFavorite, AddFavorite } = useUser();
 
     const [products, setProducts] = useState<ProductType[]>(productsData);
     const [selectedProduct, setSelectedProduct] = useState<ProductType>({} as ProductType);
@@ -38,14 +39,16 @@ const FavoriteScreen = ({navigation} : any) => {
                 </Text>
             </View>
             <FlatList
-                data={products}
-                renderItem={(item) => (
-                    <CardSearch item={item} onPress={(product: ProductType) => {
-                        setSelectedProduct(product)
-                        setQtd(0)
-                        sheetRef.current?.snapToIndex(0);
-                    }} />
-                )}
+                data={getFavsProducts()}
+                renderItem={(item) => {
+                    return (
+                        <CardSearch item={item} onPress={(product: ProductType) => {
+                            setSelectedProduct(product)
+                            setQtd(0)
+                            sheetRef.current?.snapToIndex(0);
+                        }} />
+                    )
+                }}
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
                 className="flex-1 w-full py-4"
@@ -64,7 +67,7 @@ const FavoriteScreen = ({navigation} : any) => {
                     if (index === 1) {
                         sheetRef.current?.close();
                         if (selectedProduct) {
-                            navigation.navigate('Details', { product: selectedProduct });
+                            navigation.navigate('PerfilDetails', { product: selectedProduct });
                         }
                     }
                     setIsBottomSheetOpen(index !== -1);
@@ -75,7 +78,14 @@ const FavoriteScreen = ({navigation} : any) => {
             >
                 <View className={`h-[74%] justify-between px-6`}>
                     <View>
-                        <View className="w-full h-[200px] bg-brown_300_50 rounded-md"></View>
+                        <View className="w-full h-[200px] bg-brown_300_50 rounded-md overflow-hidden">
+                            <Image
+                                source={{
+                                    uri: selectedProduct.imagePath
+                                }}
+                                className="flex-1 w-full"
+                            />
+                        </View>
 
                         <View
                             className="w-full flex-row h-4 mt-4 justify-center items-center"
@@ -153,18 +163,31 @@ const FavoriteScreen = ({navigation} : any) => {
                         className="w-full flex-row justify-center items-center py-4"
                         style={GAP[8]}
                     >
-                        <View
-                            className={`
-                                h-14 w-14 justify-center items-center
-                                border-red border-[2px] rounded-lg
-                            `}
-                        >
-                            <IFav color={COLORS.red} />
-                        </View>
+                        {
+                            isFav(selectedProduct.id) ? (
+                                <Pressable 
+                                    className={`
+                                    h-12 w-12 justify-center items-center
+                                    border-red border-[2px] rounded-lg
+                                `}
+                                onPress={() => RemoveFavorite(selectedProduct.id)}>
+                                    <IFavActive />
+                                </Pressable>
+                            ) : (
+                                <Pressable 
+                                className={`
+                                    h-12 w-12 justify-center items-center
+                                    border-red border-[2px] rounded-lg
+                                `}
+                                onPress={() => AddFavorite(selectedProduct.id)}>
+                                    <IFav />
+                                </Pressable>
+                            )
+                        }
                         <Pressable
                             onPress={() => {
                                 if (qtd !== 0) {
-                                    addProductBag(selectedProduct.id, qtd);
+                                    addProductBag(selectedProduct, qtd);
                                     Alert.alert('Produto adicionado a sacolinha');
                                     setQtd(0);
                                 }else{

@@ -6,11 +6,11 @@ import { ProductType } from "../types/ProductType";
 import { productsData } from "../data/products";
 
 interface IBagItem {
-    productId: string
+    product: ProductType
     qtd: number
 }
 
-interface IBag {
+export interface IBag {
     products: IBagItem[]
     total: number
 }
@@ -26,16 +26,21 @@ interface IUser {
 }
 
 interface IUserContext {
-    bag: IBag;
-    addProductBag: (productId: string, qtd: number) => boolean
-    removeProductBag: (productId: string) => boolean
+    bag: IBag
+    favorites: IFavorites
+    addProductBag: (product: ProductType, qtd: number) => boolean
+    removeProductBag: (product: ProductType) => boolean
     clearBag: () => void
-    addQtdProductBag: (productId: string) => boolean
-    removeQtdProductBag: (productId: string) => boolean
+    addQtdProductBag: (product: ProductType) => boolean
+    removeQtdProductBag: (product: ProductType) => boolean
     getProductsBag: () => {
         product: ProductType | null;
         qtd: number;
     }[]
+    AddFavorite: (productId: string) => boolean
+    RemoveFavorite:(productId: string) => boolean
+    isFav: (productId: string) => boolean
+    getFavsProducts: () => (ProductType | null)[]
 }
 
 export const UserContext = createContext<IUserContext>({} as  IUserContext);
@@ -46,23 +51,25 @@ export const UserProvider = ({children}: any) => {
         total: 0
     });
 
-    const [favorites, setFavorites] = useState<IFavorites>({} as IFavorites);
+    const [favorites, setFavorites] = useState<IFavorites>({
+        productsIds: []
+    });
 
-    useEffect(() => {
+    // useEffect(() => {
         
-    }, []);
+    // }, []);
 
-    const addProductBag = (productId: string, qtd: number): boolean => {
-        const product = getProductById(productId);
-        if (!product) return false
+    const addProductBag = (product: ProductType, qtd: number): boolean => {
+        // const product = getProductById(productId);
+        // if (!product) return false
 
-        const productFiltered = bag.products.filter((item) => item.productId === product.id);
+        const productFiltered = bag.products.filter((item) => item.product.id === product.id);
 
         let updatedBag: IBag;
         
         if (productFiltered.length === 0) { // Não existe na sacola
             const itemBag: IBagItem = {
-                productId: product.id,
+                product,
                 qtd
             }
 
@@ -73,7 +80,7 @@ export const UserProvider = ({children}: any) => {
         }else{
             updatedBag = {
                 products: bag.products.map((item) => {
-                    if (item.productId === product.id) {
+                    if (item.product.id === product.id) {
                         item.qtd = item.qtd + qtd
                     }
                     
@@ -82,19 +89,19 @@ export const UserProvider = ({children}: any) => {
                 total: bag.total + (product.price * product.qtd),
             };
         }
-        
+
         setBag(updatedBag);
         return true
     };
 
-    const addQtdProductBag = (productId: string) => {
-        const product = getProductById(productId);
-        if (!product) return false
+    const addQtdProductBag = (product: ProductType) => {
+        // const product = getProductById(productId);
+        // if (!product) return false
 
         const updatedProducts: IBagItem[] = bag.products.map((item) => {
-            if (item.productId === productId) {
+            if (item.product.id === product.id) {
                 return { 
-                    productId, 
+                    product, 
                     qtd: item.qtd + 1
                 }
             }
@@ -111,46 +118,55 @@ export const UserProvider = ({children}: any) => {
         return true
     }
 
-    const removeProductBag = (productId: string) => {
-        const product = getProductById(productId);
-        if (!product) return false
+    const removeProductBag = (product: ProductType) => {
+        // const product = getProductById(productId);
+        // if (!product) return false
 
-        const updatedProducts = bag.products.filter((item) => item.productId !== productId);
+        const updatedProducts = bag.products.filter((item) => item.product.id !== product.id);
 
         const updatedBag: IBag = {
           products: updatedProducts,
           total: bag.total - product.price,
         };
+
+        if (updatedBag.products.length === 0) {
+            clearBag();
+        } else {
+            setBag(updatedBag);
+        }
     
-        setBag(updatedBag);
 
         return true
     };
 
-    const removeQtdProductBag = (productId: string) => {
-        const product = getProductById(productId);
-        if (!product) return false
+    const removeQtdProductBag = (product: ProductType) => {
+        // const product = getProductById(productId);
+        // if (!product) return false
 
         const updatedProducts: IBagItem[] = bag.products.map((item) => {
-            if (item.productId === productId) {
+            if (item.product.id === product.id) {
                 return {
-                    productId,
+                    product,
                     qtd: item.qtd - 1
                 }
             }
             return item;
         });
-
         
         const filterProducts = updatedProducts.filter((product) => product.qtd > 0);
-
+        
         
         const updatedBag: IBag = {
             products: filterProducts,
             total: bag.total - product.price,
         };
     
-        setBag(updatedBag);
+        if (updatedBag.products.length === 0) {
+            clearBag();
+        } else {
+            setBag(updatedBag);
+        }
+
         return true
     };
 
@@ -161,7 +177,7 @@ export const UserProvider = ({children}: any) => {
     const getProductsBag = () => {
         const productsConvert = bag.products.map((item) => {
             return {
-                product: getProductById(item.productId),
+                product: getProductById(item.product.id),
                 qtd: item.qtd
             }
         })
@@ -176,15 +192,58 @@ export const UserProvider = ({children}: any) => {
         });
     }
 
+    const AddFavorite = (productId: string) => {
+        const product = getProductById(productId);
+        if (!product) return false
+
+        const favsFiltered = favorites.productsIds.filter((id) => id === product.id);
+        if (favsFiltered.length !== 0) return false;
+
+        setFavorites({
+            productsIds: [...favorites.productsIds, productId],
+        });
+        return true
+    }
+
+    const RemoveFavorite = (productId: string) => {
+        const product = getProductById(productId);
+        if (!product) return false
+
+        const favsFiltered = favorites.productsIds.filter((id) => id !== productId);
+    
+        setFavorites({productsIds: favsFiltered});
+
+        return true
+    }
+
+    const isFav = (productId: string) => {
+        const fav = favorites.productsIds.find((id) => id === productId)
+        return !!fav
+    }
+
+    const getFavsProducts = () => {
+        const productsConvert = favorites.productsIds.map((id) => {
+            return getProductById(id)
+        })
+
+        if (productsConvert.length === 0) return []
+        return productsConvert;
+    }
+
     return (
         <UserContext.Provider value={{
             bag, 
+            favorites,
             addProductBag, 
             removeProductBag,
             clearBag,
             addQtdProductBag,
             removeQtdProductBag,
-            getProductsBag
+            getProductsBag,
+            AddFavorite,
+            RemoveFavorite,
+            isFav,
+            getFavsProducts
         }}>
             {children}
         </UserContext.Provider>

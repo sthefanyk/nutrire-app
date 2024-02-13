@@ -7,7 +7,6 @@ import HomeScreen from "../screens/HomeScreen";
 const Stack = createNativeStackNavigator();
 
 const HomeStack = ({}) => {
-
     return (
         <Stack.Navigator
             screenOptions={{

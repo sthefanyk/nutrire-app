@@ -24,6 +24,7 @@ import Filter from "../components/Filter";
 import { ProductType } from "../types/ProductType";
 import { useUser } from "../context/UserContext";
 import { productsData } from "../data/products";
+import IFavActive from "../assets/icons/IFavActive";
 
 const SearchScreen = ({ navigation }: any) => {
     const {
@@ -33,7 +34,7 @@ const SearchScreen = ({ navigation }: any) => {
         textColor,
     } = useDesign();
 
-    const { addProductBag } = useUser();
+    const { addProductBag, isFav, RemoveFavorite, AddFavorite } = useUser();
     
     const [products, setProducts] = useState<ProductType[]>(productsData);
     const [selectedProduct, setSelectedProduct] = useState<ProductType>({} as ProductType);
@@ -118,13 +119,15 @@ const SearchScreen = ({ navigation }: any) => {
 
             <FlatList
                 data={products}
-                renderItem={(item) => (
-                    <CardSearch item={item} onPress={(product: ProductType) => {
-                        setSelectedProduct(product)
-                        setQtd(0)
-                        sheetRef.current?.snapToIndex(0);
-                    }} />
-                )}
+                renderItem={(item) => {
+                    return (
+                        <CardSearch item={item} onPress={(product: ProductType) => {
+                            setSelectedProduct(product)
+                            setQtd(0)
+                            sheetRef.current?.snapToIndex(0);
+                        }} />
+                    )
+                }}
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
                 className="flex-1 w-full py-4 mb-4"
@@ -240,18 +243,31 @@ const SearchScreen = ({ navigation }: any) => {
                         className="w-full flex-row justify-center items-center py-4"
                         style={GAP[8]}
                     >
-                        <View
-                            className={`
-                                h-12 w-12 justify-center items-center
-                                border-red border-[2px] rounded-lg
-                            `}
-                        >
-                            <IFav color={COLORS.red} />
-                        </View>
+                        {
+                            isFav(selectedProduct.id) ? (
+                                <Pressable 
+                                    className={`
+                                    h-12 w-12 justify-center items-center
+                                    border-red border-[2px] rounded-lg
+                                `}
+                                onPress={() => RemoveFavorite(selectedProduct.id)}>
+                                    <IFavActive />
+                                </Pressable>
+                            ) : (
+                                <Pressable 
+                                className={`
+                                    h-12 w-12 justify-center items-center
+                                    border-red border-[2px] rounded-lg
+                                `}
+                                onPress={() => AddFavorite(selectedProduct.id)}>
+                                    <IFav />
+                                </Pressable>
+                            )
+                        }
                         <Pressable
                             onPress={() => {
                                 if (qtd !== 0) {
-                                    addProductBag(selectedProduct.id, qtd);
+                                    addProductBag(selectedProduct, qtd);
 
                                     Alert.alert('Produto adicionado a sacolinha');
                                     setQtd(0);

@@ -55,16 +55,16 @@ const RegisterProductScreen = ({ navigation }: any) => {
 							${font("3xl") + " " + textColor()}
 						`}
 					>
-						Cadastrar-se
+						Novo produto
 					</Text>
-					<Text
+					{/* <Text
 						className={`
 							font-montserrat-medium text-brown_200 w-full place-items-start
 							${font("sm") + " " + textColor()}
 						`}
 					>
 						Crie sua conta
-					</Text>
+					</Text> */}
 				</View>
 
 				<View className={`

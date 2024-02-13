@@ -14,6 +14,7 @@ import { useProduct } from "../context/ProductContext";
 import { formatNumberForReal } from "../services/FormatService";
 import DetailsImage from "../components/DetailsImage";
 import { useUser } from "../context/UserContext";
+import IFavActive from "../assets/icons/IFavActive";
 
 const comments: CommentType[] = [
     { 
@@ -34,7 +35,7 @@ const DetailsScreen = ({route}: any) => {
 
     const { textColor, font, screenThemeHex } = useDesign();
     const { theme } = useTheme();
-    const { addProductBag } = useUser();
+    const { addProductBag, isFav, RemoveFavorite, AddFavorite } = useUser();
     const [qtd, setQtd] = useState(0);
 
     const { product } = route.params;
@@ -155,18 +156,32 @@ const DetailsScreen = ({route}: any) => {
                 className="w-full flex-row justify-center items-center p-4"
                 style={GAP[8]}
             >
-                <View
-                    className={`
-                        h-12 w-12 justify-center items-center
-                        border-red border-[2px] rounded-lg
-                    `}
-                >
-                    <IFav color={COLORS.red} />
-                </View>
+                {
+                    isFav(product.id) ? (
+                        <Pressable 
+                            className={`
+                            h-12 w-12 justify-center items-center
+                            border-red border-[2px] rounded-lg
+                        `}
+                        onPress={() => RemoveFavorite(product.id)}>
+                            <IFavActive />
+                        </Pressable>
+                    ) : (
+                        <Pressable 
+                        className={`
+                            h-12 w-12 justify-center items-center
+                            border-red border-[2px] rounded-lg
+                        `}
+                        onPress={() => AddFavorite(product.id)}>
+                            <IFav />
+                        </Pressable>
+                    )
+                }
+                
                 <Pressable
                     onPress={() => {
                         if (qtd !== 0) {
-                            addProductBag(product.id, qtd);
+                            addProductBag(product, qtd);
                             Alert.alert('Produto adicionado a sacolinha')
                             setQtd(0);
                         }else{
