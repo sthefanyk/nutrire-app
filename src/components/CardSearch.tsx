@@ -5,7 +5,6 @@ import { Theme } from "../enums/Theme";
 import { ProductType } from "../types/ProductType";
 import { useDesign } from "../design/useDesign";
 import IFav from "../assets/icons/IFav";
-import { COLORS } from "../design/Colors";
 import { formatNumberForReal } from "../services/FormatService";
 import { useUser } from "../context/UserContext";
 import IFavActive from "../assets/icons/IFavActive";

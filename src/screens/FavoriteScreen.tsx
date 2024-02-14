@@ -1,25 +1,17 @@
 import { Alert, FlatList, Image, Pressable, Text, View } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
 import { useDesign } from "../design/useDesign";
-import createTab from "../navigators/Tab";
 import CardSearch from "../components/CardSearch";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { COLORS } from "../design/Colors";
-import GAP from "../design/gap";
-import IAdd from "../assets/icons/IAdd";
-import IRemove from "../assets/icons/IRemove";
-import IFav from "../assets/icons/IFav";
-import { useProduct } from "../context/ProductContext";
-import { formatNumberForReal } from "../services/FormatService";
 import { ProductType } from "../types/ProductType";
 import { productsData } from "../data/products";
 import { useUser } from "../context/UserContext";
-import IFavActive from "../assets/icons/IFavActive";
+import BottomSheetComponent from "../components/BottomSheetComponent";
 
 const FavoriteScreen = ({navigation} : any) => {
     const { screenTheme, screenThemeHex, font, textColor } = useDesign();
 
-    const { addProductBag, getFavsProducts, isFav, RemoveFavorite, AddFavorite } = useUser();
+    const { getFavsProducts } = useUser();
 
     const [products, setProducts] = useState<ProductType[]>(productsData);
     const [selectedProduct, setSelectedProduct] = useState<ProductType>({} as ProductType);
@@ -59,7 +51,17 @@ const FavoriteScreen = ({navigation} : any) => {
                 <View className="z-1 absolute bg-[#000] h-screen w-screen opacity-60"></View>
             )}
 
-            <BottomSheet
+            <BottomSheetComponent
+                selectedProduct={selectedProduct}
+                qtd={qtd}
+                setQtd={setQtd}
+                isBottomSheetOpen={isBottomSheetOpen}
+                setIsBottomSheetOpen={setIsBottomSheetOpen}
+                navigation={navigation}
+                sheetRef={sheetRef}
+            />
+
+            {/* <BottomSheet
                 ref={sheetRef}
                 index={-1}
                 snapPoints={["75%", "100%"]}
@@ -207,7 +209,7 @@ const FavoriteScreen = ({navigation} : any) => {
                         </Pressable>
                     </View>
                 </View>
-            </BottomSheet>
+            </BottomSheet> */}
         </View>
     );
 };

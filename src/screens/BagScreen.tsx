@@ -42,7 +42,7 @@ const BagScreen = () => {
                         const product = item.product;
                         
                         return (
-                            <View className="flex-row border-b-[0.4px] py-4
+                            <View key={item.product.id} className="flex-row border-b-[0.4px] py-4
                             border-green_400 border-opacity-25">
                                 <View className="bg-brown_300_50 h-20 aspect-square rounded-lg overflow-hidden">
                                     <Image
@@ -72,7 +72,7 @@ const BagScreen = () => {
                                             )}
                                         `}
                                         >
-                                            {formatNumberForReal(product.price * item.qtd)}
+                                            {formatNumberForReal(product.price)}
                                         </Text>
                                     </View>
                                     <Text
