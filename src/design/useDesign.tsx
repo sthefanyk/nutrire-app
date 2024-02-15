@@ -2,6 +2,7 @@ import { Platform } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 import { Theme } from "../enums/Theme";
 import { COLORS } from "./Colors";
+import { Header } from "../enums/Header";
 
 export interface DesignType {
     font: (font: string) => string;
@@ -14,10 +15,12 @@ export interface DesignType {
     textColorHex: () => string;
     inputTheme: () => string;
     inputThemeHex: () => string;
+    headerColor: () => { bg: string, veg: string };
+    textMsgColor: (isOwner: boolean) => string
 }
 
 export const useDesign = (): DesignType => {
-    const { theme } = useTheme();
+    const { theme, header } = useTheme();
 
     const font = (font: string): string => {
         // switch (font) {
@@ -141,6 +144,43 @@ export const useDesign = (): DesignType => {
         return COLORS.brown_300;
     };
 
+    const headerColor = (): { bg: string, veg: string } => {
+        if (header === Header.LightGreen) 
+            return { bg: COLORS.green_300, veg: COLORS.green_500};
+
+        if (header === Header.DarkGreen)
+            return { bg: COLORS.green_500, veg: COLORS.green_300};
+
+        if (header === Header.LightPurple) 
+            return { bg: COLORS.purple, veg: COLORS.brown_300};
+
+        if (header === Header.DarkPurple) 
+            return { bg: COLORS.brown_300, veg: COLORS.purple};
+
+        if (header === Header.LightBrown) 
+            return { bg: COLORS.honey, veg: COLORS.brown_200};
+
+        if (header === Header.DarkBrown) 
+            return { bg: COLORS.brown_200, veg: COLORS.honey};
+
+        return { bg: COLORS.green_500, veg: COLORS.green_300};
+    };
+
+    const textMsgColor = (isOwner: boolean): string => {
+        switch (header) {
+            case Header.LightGreen:
+                if (!isOwner) return COLORS.brown_200
+                break;
+            case Header.DarkGreen:
+                if (isOwner) return COLORS.brown_200
+                break;
+            default:
+                break;
+        }
+
+        return COLORS.brown_100
+    };
+
     const inputTheme = () => {
         if (theme === Theme.Normal) return "bg-light";
 
@@ -171,6 +211,8 @@ export const useDesign = (): DesignType => {
         screenThemeHex,
         textColorHex,
         inputTheme,
-        inputThemeHex
+        inputThemeHex,
+        headerColor,
+        textMsgColor
     };
 };

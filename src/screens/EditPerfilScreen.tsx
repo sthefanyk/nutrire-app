@@ -1,7 +1,6 @@
 import {
-    ActivityIndicator,
-    Button,
     Image,
+    Pressable,
     ScrollView,
     Text,
     TouchableWithoutFeedback,
@@ -12,25 +11,16 @@ import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { useDesign } from "../design/useDesign";
 import { Theme } from "../enums/Theme";
-import { StatusBar } from "expo-status-bar";
-import { COLORS } from "../design/Colors";
 import HeaderPerfil from "../assets/groups/HeaderPerfil";
-import IEdit from "../assets/icons/IEdit";
-import IArrowNext from "../assets/icons/IArrowNext";
 import GAP from "../design/gap";
-import ButtonPerfil from "../components/ButtonPerfil";
-import ILogout from "../assets/icons/ILogout";
-import IBag from "../assets/icons/IBag";
-import IConfig from "../assets/icons/IConfig";
-import IPrivacity from "../assets/icons/IPrivacity";
-import IFav from "../assets/icons/IFav";
 import ButtonEdit from "../components/ButtonEdit";
 import IEditSmall from "../assets/icons/IEditSmall";
+import { Header } from "../enums/Header";
 
 const EditPerfilScreen = () => {
-    const { logout, loading, userData } = useAuth();
-    const { theme, updateTheme } = useTheme();
-    const { screenTheme, textColor, font, textColorHex, screenThemeHex } = useDesign();
+    const { userData } = useAuth();
+    const { theme, updateTheme, updateHeader } = useTheme();
+    const { screenTheme, textColor, font, screenThemeHex, headerColor } = useDesign();
 
 
     const changeTheme = () => {
@@ -49,20 +39,13 @@ const EditPerfilScreen = () => {
         updateTheme(Theme.Normal);
     };
 
-    const getButtonColor = () => {
-        if(theme === Theme.Normal) return "bg-light"
-        if(theme === Theme.Light) return "bg-green_100"
-        if(theme === Theme.Dark) return "bg-dark_search"
-    }
-
     return (
-        <TouchableWithoutFeedback onPress={() => changeTheme()}>
             <View
                 className={`flex-1 w-full px-4 items-center ${screenTheme()} overflow-hidden`}
                 style={{backgroundColor: screenThemeHex()}}
             >
                 <View className="w-full items-center justify-end h-[190]">
-                    <HeaderPerfil className="absolute -top-[60%]"/>
+                    <HeaderPerfil bg={headerColor().bg} veg={headerColor().veg} className="absolute -top-[60%]"/>
 
                     <View className="h-32 w-32 rounded-full overflow-hidden">
                         <Image 
@@ -117,14 +100,26 @@ const EditPerfilScreen = () => {
 
                         <ButtonEdit 
                             text="Cor de perfil" 
-                            textSecunday="Verde Escuro" 
+                            textSecunday="Verde Escuro"
+                            onPress={() => updateHeader(Header.DarkGreen)}
                         />
+
+                        <ButtonEdit 
+                            text="Tema" 
+                            textSecunday={theme === Theme.Normal ? "Normal" : theme === Theme.Light ? "Light" : "Dark"} 
+                            onPress={() => changeTheme()}
+                        />
+                        
                     </View>
                     </ScrollView>
 
                 </View>
+
+
+                <View className="">
+
+                </View>
             </View>
-        </TouchableWithoutFeedback>
     );
 };
 

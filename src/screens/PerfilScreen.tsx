@@ -29,7 +29,7 @@ const PerfilScreen = ({navigation}: any) => {
     const { logout, loading, userData } = useAuth();
     const { theme } = useTheme();
     const { getFavsProducts } = useUser();
-    const { screenTheme, textColor, font, textColorHex, screenThemeHex } = useDesign();
+    const { screenTheme, textColor, font, textColorHex, screenThemeHex, headerColor } = useDesign();
 
     return (
         <View
@@ -42,7 +42,7 @@ const PerfilScreen = ({navigation}: any) => {
                 <StatusBar backgroundColor="transparent" />
             )}
             <View className="w-full items-center justify-end h-[190]">
-                <HeaderPerfil className="absolute -top-[60%]"/>
+                <HeaderPerfil bg={headerColor().bg} veg={headerColor().veg} className="absolute -top-[60%]"/>
                 <Image 
                     source={{uri: userData.photo }}
                     className="h-32 w-32 rounded-full"

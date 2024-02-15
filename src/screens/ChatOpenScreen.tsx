@@ -22,7 +22,7 @@ const ChatOpenScreen = () => {
     const flatListRef = useRef<FlatList<any>>(null);
     const { userData } = useAuth();
     const { theme } = useTheme();
-    const { screenTheme, textColor, font, screenThemeHex } = useDesign();
+    const { screenTheme, textColor, font, screenThemeHex, headerColor, textMsgColor } = useDesign();
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState<MessageType[]>([
         {
@@ -80,7 +80,7 @@ const ChatOpenScreen = () => {
                 <StatusBar backgroundColor="transparent" />
             )}
             <View className="w-full items-center justify-end h-[160]">
-                <HeaderPerfil className="absolute -top-[95%]" />
+                <HeaderPerfil bg={headerColor().bg} veg={headerColor().veg} className="absolute -top-[95%]" />
                 <Image
                     source={{ uri: userData.photo }}
                     className="h-32 w-32 rounded-full"
@@ -128,12 +128,7 @@ const ChatOpenScreen = () => {
                                 <View
                                     className={`
                                         max-w-[70%]
-                                        p-2 rounded-lg 
-                                        ${
-                                            item.owner
-                                                ? "bg-green_300"
-                                                : "bg-green_500"
-                                        }
+                                        p-2 rounded-lg
                                         ${
                                             item.owner
                                                 ? ""
@@ -149,6 +144,7 @@ const ChatOpenScreen = () => {
                                                 : ""
                                         }
                                     `}
+                                    style={{backgroundColor: item.owner ? headerColor().veg : headerColor().bg }}
                                 >
                                     <Text
                                         className={`
@@ -156,6 +152,7 @@ const ChatOpenScreen = () => {
                                             "base"
                                         )}
                                         `}
+                                        style={{color: textMsgColor(item.owner)}}
                                     >
                                         {item.message}
                                     </Text>
