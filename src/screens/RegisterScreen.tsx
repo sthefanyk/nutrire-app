@@ -88,7 +88,7 @@ const RegisterScreen = ({ navigation }: any) => {
                     <Text
                         className={`
 							font-montserrat-medium text-brown_200 w-full place-items-start
-							${font("sm") + " " + textColor()}
+							${font("base") + " " + textColor()}
 						`}
                     >
                         Crie sua conta

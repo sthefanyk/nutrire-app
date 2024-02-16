@@ -70,7 +70,7 @@ const ChatOpenScreen = () => {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={120.2}
+            keyboardVerticalOffset={120.1}
             className={`flex-1 w-full px-4 items-center ${screenTheme()} overflow-hidden`}
             style={{backgroundColor: screenThemeHex()}}
         >

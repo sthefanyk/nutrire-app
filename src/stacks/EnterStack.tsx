@@ -23,6 +23,9 @@ export const EnterStack = () => {
             <Stack.Screen
                 name="Login"
                 component={LoginScreen}
+                options={{
+                    header: props => <Header props={props} bag={false} back={true} />
+                }}
             />
 
             <Stack.Screen

@@ -51,8 +51,8 @@ const RegisterProductScreen = ({ navigation }: any) => {
 				<View className="w-full py-2 mb-4" style={GAP[4]}>
 					<Text
 						className={`
-							font-fresca text-brown_200 w-full place-items-start
-							${font("3xl") + " " + textColor()}
+							font-montserrat-semibold text-brown_200 w-full place-items-start
+							${font("2xl") + " " + textColor()}
 						`}
 					>
 						Novo produto

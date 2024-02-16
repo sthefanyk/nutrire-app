@@ -106,7 +106,7 @@ const EditPerfilScreen = () => {
 
                         <ButtonEdit 
                             text="Tema" 
-                            textSecunday={theme === Theme.Normal ? "Normal" : theme === Theme.Light ? "Light" : "Dark"} 
+                            textSecunday={theme === Theme.Normal ? "Normal" : theme === Theme.Light ? "Claro" : "Escuro"} 
                             onPress={() => changeTheme()}
                         />
                         
